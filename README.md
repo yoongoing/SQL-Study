@@ -173,6 +173,7 @@ ANSI/ISO SQL 표준은 데이터 분석을 위해 다음의 3가지 함수를 �
     - Grouping Columns의 수가 N이면, **N+1 Level**의 Subtotal 생성
     - 인수 순서가 바뀌면 수행결과도 바뀜
     
+    
     ```SQL
     -- 예제1 : GROUP BY 절 + ORDER BY 절
     SELECT B.DNAME, A.JOB, COUNT(*) AS EMP_CNT, SUM(A.SAL) AS SAL_SUM
@@ -223,6 +224,7 @@ ANSI/ISO SQL 표준은 데이터 분석을 위해 다음의 3가지 함수를 �
     - GROUPING COLUMNS의 수가 N, 2^N승 Subtotal 생성
     - ROLLUP에 비해 시스템에 부하를 줌
     - 인수의 순서가 바뀌는 경우, 행간에 정렬 순서는 바뀔 수 있어도 데이터 결과는 같음
+    
     
     ```SQL
     -- 예제1 : CUBE 함수 + ORDER BY 절
@@ -280,6 +282,7 @@ ANSI/ISO SQL 표준은 데이터 분석을 위해 다음의 3가지 함수를 �
 3. GROUPING SETS 함수
     - 표시된 인수들에 대한 개별 집계를 구할수 있음
     - 인수의 순서가 바뀌어도 결과 같음
+    
     
     ```SQL
     -- 예제1 : GROUPING SETS UNION ALL 버전
@@ -367,6 +370,21 @@ ANSI/ISO SQL 표준은 데이터 분석을 위해 다음의 3가지 함수를 �
 
 #### 일반 집계 함수
 
+1. SUM 함수
+    </br>파티션별 위도우의 합
+    
+2. MAX 함수
+    </br>파티션별 윈도우의 최댓값
+    
+3. MIN 함수
+    </br>파티션별 윈도우의 최댓값
+    
+4. AVG 함수
+    </br>파티션별 윈도우의 평균값, ROWS 윈도우를 통해 원하는 조건에 맞는 데이터에 대한 통계값 구할 수 있음
+    
+5. COUNT 함수
+    </br>파티션별 윈도우의 카운트값 
+    
 </br>
 
 #### 그룹 내 비율 함수
@@ -463,8 +481,6 @@ ANSI/ISO SQL 표준은 데이터 분석을 위해 다음의 3가지 함수를 �
     |  JAMES |  950 |  4 |
     |  SMITH |  800 |  4 |
 </br>
-
-6. SUM 함수
 
 ---
 
