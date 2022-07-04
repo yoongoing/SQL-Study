@@ -484,15 +484,136 @@ ANSI/ISO SQL 표준은 데이터 분석을 위해 다음의 3가지 함수를 �
 
 ---
 
-<h4> 5) Top N 쿼리 </h4>
-<details>
-</details>
+### Top N 쿼리
+
+#### ROWNUM 슈도 칼럼
+
+</br>Pseudo Column으로서 SQL 처리 결과 집합의 각 행에 대해 임시로 부여되는 일련번호. 테이블이나 집합에서 원하는 만큼의 행만 가져오고 싶을때 WHERE 절에서 행의 개수를 제한하는 목적
+</br>Oracle의 경우 정렬이 완료된 후 데이터의 일부가 출력되는 것이 아닌, `데이터의 일부가 먼저 추출된 후 데이터에 대한 정렬 작업`이 일어나므로 주의
+
+#### 한 건의 행만 가져오기
+
+```SQL
+-- 한 건의 행만 가져오기
+SELECT PLAYER_NAME FROM PLAYER WHERE ROWNUM <= 1;
+SELECT PLAYER_NAME FROM PLAYER WHERE ROWNUM < 2;
+
+-- 두 건 이상의 N행을 가져오고 싶을때
+SELECT PLAYER_NAME FROM PLAYER WHERE ROWNUM <= N;
+SELECT PLAYER_NAME FROM PLAYER WHERE ROWNUM < N+1;
+```
+
+#### TOP 절
+
+</br>SQL Server는 TOP절을 사용해 결과 집합으로 출력되는 행의 수를 제한.
+
+```SQL
+SELECT TOP(2)
+       ENAME, SAL
+  FROM EMP
+ORDER BY SAL DESC;
+```
+| ENAME |  SAL |
+|:-----:|:----:|
+|  KING | 5000 |
+| SCOTT | 3000 |
+
+```SQL
+SELECT TOP(2) WITH TIES -- 동일 수치의 데이터를 추가로 더 추출
+  FROM EMP
+ORDER BY SAL DESC;
+```
+| ENAME |  SAL |
+|:-----:|:----:|
+|  KING | 5000 |
+| SCOTT | 3000 |
+|  FORD | 3000 |
+
+
+#### ROW LIMITING 절
+
+</br>Oracle 12.1, SQL Server 2012 이상부터 ROW LIMITING으로 TOP N 쿼리를 작성할 수 있음. ORDER BY 절 다음에 기술하며 ORDER BY 절과 함께 수행됨.
+
+`[OFFSET offset {ROW | ROWS}]`
+`[FETCH {FIRST | NEXT} [{rowcount | percent PERCENT}] {ROW | ROWS} {ONLY | WITH TIES}]`
+
+- OFFSET offset : 건너뛸 행의 개수 지정
+- FETCH : 반환할 행의 개수나 백분율 지정
+- ONLY : 지정된 행의 개수나 백분율 만큼 행 반환
+- WITH TIES : 마지막 행에 대한 동순위를 포함해서 반홪
+
+```SQL
+SELECT EMPNO, SAL 
+  FROM EMP
+ORDER BY SAL, EMPNO FETCH FIRST 5 ROWS ONLY;
+```
+| EMPNO |  SAL |
+|:-----:|:----:|
+|  7369 |  800 |
+|  7900 |  950 |
+|  7876 | 1100 |
+|  7654 | 1250 |
+|  7521 | 1250 |
+
+```SQL
+SELECT EMPNO, SAL
+  FROM EMP
+ORDER BY SAL, EMPNO OFFSET 5 ROWS; -- 상위 5개 행을 건너뜀
+```
+| EMPNO |  SAL |
+|:-----:|:----:|
+|  7934 | 1300 |
+|  7844 | 1500 |
+|  7499 | 1600 |
+|  ...  |  ... |
 
 ---
 
-<h4> 6) 계층형 질의와 셀프 조인 </h4>
-<details>
-</details>
+### 계층형 질의와 셀프 조인
+
+#### 계층형 데이터?
+</br>동일 테이블에 계층적으로 상위와 하위 데이터가 포함된 데이터 (관리자-사원 관계, 상위조직-하위조직 관계)
+
+#### 셀프조인
+</br>동일 테이블 사이의 조인. FROM 절에 동일 테이블이 두 번 이상 나타남.
+</br>동일 테이블 사이의 조인을 수행하기 위해서는 `테이블 식별을 위해 Alias 사용 필수` 
+</br>셀프조인은 동일한 테이블이지만, 개념적으로는 두 개의 서로 다른 테이블을 사용하는 것과 동일함
+
+```SQL
+-- JONES의 자식노드를 조회하는 쿼리
+SELECT WORKER.EMPNO, WORKER.ENAME, WORKER.MGR
+FROM EMP MANAGER, EMP WORKER -- 동일한 테이블처럼 처리하기위해서는 Alias 사용필수
+WHERE MANAGER.ENAME = 'JONES'
+  AND WORKER.MGR = MANAGER.EMPNO;
+```
+| EMPNO | ENAME | MGR  |
+|:-----:|:-----:|------|
+|  7788 | SCOTT | 7566 |
+|  7902 |  FORD | 7566 |
+
+
+```SQL
+-- JONES의 자식노드의 자식노드를 조회하는 쿼리
+-- 순방향 전개
+SELECT WORKER.EMPNO, WORKER.ENAME, WORKER.MGR
+ FROM EMP MANAGER, EMP MID, EMP WORKER
+WHERE MANAGER.ENAME = 'JONES'
+  AND MID.MGR = A.EMPNO
+  AND WORKER.MGR = MID.EMPNO;
+```
+| EMPNO | ENAME |  MGR |
+|:-----:|:-----:|:----:|
+|  7369 | SMITH | 7902 |
+|  7876 | ADAMS | 7788 |
+
+
+```SQL
+-- SMITH의 부모 노드를 조회하는 쿼리
+SELECT MANAGER.EMPNO, MANAGER.ENAME, MANAGER.MGR 
+  FROM EMP WORKER, EMP MANAGER
+ WHERE WORKER.ENAME = 'SMITH'
+   AND MANAGER.EMPNO = WORKER.MGR;
+```
 
 ---
 
