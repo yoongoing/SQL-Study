@@ -608,12 +608,78 @@ WHERE MANAGER.ENAME = 'JONES'
 
 
 ```SQL
--- SMITH의 부모 노드를 조회하는 쿼리
+-- SMITH의 부모노드를 조회하는 쿼리
 SELECT MANAGER.EMPNO, MANAGER.ENAME, MANAGER.MGR 
   FROM EMP WORKER, EMP MANAGER
  WHERE WORKER.ENAME = 'SMITH'
    AND MANAGER.EMPNO = WORKER.MGR;
 ```
+| EMPNO | ENAME |  MGR |
+|:-----:|:-----:|:----:|
+|  7902 |  FORD | 7566 |
+
+```SQL
+-- SMITH의 부모노드의 부모노드를 조회하는 쿼리
+SELECT MANAGER.EMPNO, MANAGER.ENAME, MANAGER.MGR
+  FROM EMP WORKER, EMP MID, EMP MANAGER
+ WHERE WORKER.ENAME = 'SMITH'
+   AND MID.EMPNO = WORKER.MGR
+   AND MANAGER.EMPNO = MID.MGR;
+```
+| EMPNO | ENAME |  MGR |
+|:-----:|:-----:|:----:|
+|  7566 | JONES | 7839 |
+
+
+#### 계층형 질의
+
+1. Oracle 계층형 질의
+    
+    1. START WITH 절 : 계층구조전개의 시작위치를 지정하는 구문
+    
+    2. CONNECT BY 절 : 다음에 전개될 자식 데이터를 지정하는 구문
+    
+    3. PRIOR 절 : CONNECT BY 절에 사용되며, 현재 읽은 칼럼을 지정
+        - (FK) = PRIOR (PK) : 순방향 전개
+        - (PK) = PRIOR (FK) : 역방향 전개
+    
+    4. NOCYCLE : 이미 나타났던 동일한 데이터가 전개 중에 다시 나타날때 사이클(CYCLE)이 발생했다고 함. 사이클이 발생하면 런타임 오류가 발생하게 되는데, `NOCYCLE을 추가하면 오류를                  발생시키지 않고 사이클이 발생한 이후의 데이터를 전개하지 않음`
+    
+    5. ORDER SIBLINGS BY : 형제 노드(동일 LEVEL) 사이에서 정렬 수행
+    
+    6. WHERE : 모든 전개를 수행한 후 지정된 조건을 만족하는 데이터만 추출(필터링)
+
+
+2. Oracle 계층형 질의에서 사용되는 가상 칼럼
+    1. LEVEL : 루트 테이터는 1, 그 하위 데이터는 2. 리프(LEAF) 데이터까지 1씩 증가
+    2. CONNECT_BY_ISLEAF : 전개 과정ㅁ에서 해당 데이터가 리프 데이터면 1, 그렇지 않으면 0
+    3. CONNECT_BY_ISCYCLE : 전개 과정에서 자식을 갖는데, 해당 데이터가 조상으로서 존재하면 1, 그렇지 않으면 0 (CYCLE 옵션 사용할때만 사용 가능)
+
+```SQL
+SELECT  LEVEL AS LV, LPAD (' ', (LEVEL - 1) * 2) || EMPNO AS EMPNO, MGR
+        , CONNECT_BY_ISLEAF AS ISLEAF
+  FROM EMP
+START WITH MGR IS NULL
+CONNECT BY MGR = PRIOR EMPNO;
+```
+| LV | EMPNO |  MGR | ISLEAF |
+|:--:|:-----:|:----:|:------:|
+|  1 |  7839 |      |      0 |
+|  2 |  7566 | 7839 |      0 |
+|  3 |  7788 | 7566 |      0 |
+|  4 |  7876 | 7788 |      1 |
+|  3 |  7902 | 7566 |      0 |
+|  4 |  7369 | 7902 |      1 |
+|  2 |  7698 | 7839 |      0 |
+|  3 |  7499 | 7698 |      1 |
+|  3 |  7521 | 7698 |      1 |
+|  3 |  7654 | 7698 |      1 |
+|  3 |  7844 | 7698 |      1 |
+|  3 |  7900 | 7698 |      1 |
+|  2 |  7782 | 7839 |      0 |
+|  3 |  7934 | 7782 |      1 |
+
+<img src="./src/forward.png" alt="순방향 예시" width="500" height="600">
 
 ---
 
