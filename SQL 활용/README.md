@@ -155,6 +155,8 @@ WHERE PLAYER_NAME = '윤%';
 </br>차집합 연산 수행, **중복 제거**
 </br>
 
+---
+
 ### [제3절] 그룹함수
 
 #### 그룹함수?
@@ -620,7 +622,6 @@ ANSI/ISO SQL 표준은 데이터 분석을 위해 다음의 3가지 함수를 �
     |  ADAMS | 1100 |  4 |
     |  JAMES |  950 |  4 |
     |  SMITH |  800 |  4 |
-</br>
 
 ---
 
@@ -1011,6 +1012,7 @@ $ : 문자열의 끝
 [:blank:]   : 공백 문자
 [:space:]   : 공간 문자 (space, enter, tab)
 ```
+</br>
 
 2. PERL 정규표현식 연산자
 
@@ -1030,6 +1032,7 @@ $ : 문자열의 끝
 {,m}? : 최대 m회 일치
 {m,n}? : 최소 m회, 최대 n회 일치
 ```
+</br>
 
 #### 정규 표현식 조건과 함수
 
@@ -1046,6 +1049,7 @@ $ : 문자열의 끝
       - n : dot(.)을 개행 문자와 일치
       - m : 다중행 모드
       - x : 검색 패턴의 공백 문자 무시
+</br>
 
 2. REGEXP_REPLACE 함수
     </br>: source_char에서 일치한 pattern을 replace_string으로 변경한 문자값을 반환
@@ -1055,6 +1059,7 @@ $ : 문자열의 끝
     - replace_string    : 변경 문자열 지정
     - position          : 검색 시작 위치 지정 (기본값은 1)
     - occurrence        : 패턴 일치 횟수 지정 (기본값은 1)
+</br>
 
 3. REGEXP_SUBSTR 함수
     </br>: source_char에서 일치한 pattern반환
@@ -1062,6 +1067,7 @@ $ : 문자열의 끝
     </br>
 
     - substr : 서브 표현식을 지정 (0은 전체 패턴 / 1 이상은 서브표현식 / 기본값은 0)
+</br>
 
 4. REGEXP_INSTR 함수
     </br>: source_char에서 일치한 pattern의 시작위치를 정수로 반환
@@ -1069,6 +1075,7 @@ $ : 문자열의 끝
     </br>
 
     - return_opt : 반환 옵션 지정 (0은 시작 위치 / 1은 다음 위치 / 기본값은 0)
+</br>
 
 5. REGEXP_COUNT 함수 
     </br>: source_char에서 일치한 pattern의 횟수를 반환
