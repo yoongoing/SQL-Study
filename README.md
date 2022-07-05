@@ -172,7 +172,7 @@ ANSI/ISO SQL 표준은 데이터 분석을 위해 다음의 3가지 함수를 �
     - ROLLUP에 지정된 Grouping Columns의 List는 Subtotal을 생성하기 위함
     - Grouping Columns의 수가 N이면, **N+1 Level**의 Subtotal 생성
     - 인수 순서가 바뀌면 수행결과도 바뀜
-    
+    </br>
     
     ```SQL
     -- 예제1 : GROUP BY 절 + ORDER BY 절
@@ -193,6 +193,7 @@ ANSI/ISO SQL 표준은 데이터 분석을 위해 다음의 3가지 함수를 �
     |    SALES   |   CLERK   |    1    |    950 |
     |    SALES   |  MANAGER  |    1    |   2850 |
     |    SALES   |  SALESMAN |    4    |   5600 |
+    </br>
     
     ```SQL
     -- 예제2 : ROLLUP 함수 + ORDER BY 절
@@ -224,7 +225,7 @@ ANSI/ISO SQL 표준은 데이터 분석을 위해 다음의 3가지 함수를 �
     - GROUPING COLUMNS의 수가 N, 2^N승 Subtotal 생성
     - ROLLUP에 비해 시스템에 부하를 줌
     - 인수의 순서가 바뀌는 경우, 행간에 정렬 순서는 바뀔 수 있어도 데이터 결과는 같음
-    
+    </br>
     
     ```SQL
     -- 예제1 : CUBE 함수 + ORDER BY 절
@@ -233,7 +234,7 @@ ANSI/ISO SQL 표준은 데이터 분석을 위해 다음의 3가지 함수를 �
     WHERE B.DEPTNO = A.DEPTNO
     GROUP BY CUBE (B.DNAME, A.JOB)
     ORDER BY B.DNAME, A.JOB;
-    
+    </br>
     
     -- 예제2 : CUBE 함수의 UNION ALL 버전
     SELECT B.DNAME, A.JOB, COUNT(*) AS EMP_CNT, SUM(A.SAL) AS SAL_SUM
@@ -282,7 +283,7 @@ ANSI/ISO SQL 표준은 데이터 분석을 위해 다음의 3가지 함수를 �
 3. GROUPING SETS 함수
     - 표시된 인수들에 대한 개별 집계를 구할수 있음
     - 인수의 순서가 바뀌어도 결과 같음
-    
+    </br>
     
     ```SQL
     -- 예제1 : GROUPING SETS UNION ALL 버전
@@ -317,14 +318,12 @@ ANSI/ISO SQL 표준은 데이터 분석을 위해 다음의 3가지 함수를 �
     |            |  SALESMAN |    4    |   5600 |
     
 ---
-</br>
-
 
 ### 윈도우 함수?
 기존 관계형 데이터베이스는 칼럼과 칼럼 간의 연산·비교·연결, 집합에 대한 집계는 쉬웠지만 행과 행간의 관계를 정의·비교·연산하는 것을 하나의 SQL문으로 처리하는것은 어려움.
 따라서 **INLINE VIEW를 이용해 복잡한 SQL문을 작성하던 것을 행과 행간의 관계를 쉽게 정의하기 위해 만든 함수**
 </br>
-
+</br>
 
 #### 윈도우 함수 종류
 
@@ -487,9 +486,9 @@ ANSI/ISO SQL 표준은 데이터 분석을 위해 다음의 3가지 함수를 �
 ### Top N 쿼리
 
 #### ROWNUM 슈도 칼럼
-
-</br>Pseudo Column으로서 SQL 처리 결과 집합의 각 행에 대해 임시로 부여되는 일련번호. 테이블이나 집합에서 원하는 만큼의 행만 가져오고 싶을때 WHERE 절에서 행의 개수를 제한하는 목적
+Pseudo Column으로서 SQL 처리 결과 집합의 각 행에 대해 임시로 부여되는 일련번호. 테이블이나 집합에서 원하는 만큼의 행만 가져오고 싶을때 WHERE 절에서 행의 개수를 제한하는 목적
 </br>Oracle의 경우 정렬이 완료된 후 데이터의 일부가 출력되는 것이 아닌, `데이터의 일부가 먼저 추출된 후 데이터에 대한 정렬 작업`이 일어나므로 주의
+</br>
 
 #### 한 건의 행만 가져오기
 
@@ -502,10 +501,11 @@ SELECT PLAYER_NAME FROM PLAYER WHERE ROWNUM < 2;
 SELECT PLAYER_NAME FROM PLAYER WHERE ROWNUM <= N;
 SELECT PLAYER_NAME FROM PLAYER WHERE ROWNUM < N+1;
 ```
+</br>
 
 #### TOP 절
-
-</br>SQL Server는 TOP절을 사용해 결과 집합으로 출력되는 행의 수를 제한.
+SQL Server는 TOP절을 사용해 결과 집합으로 출력되는 행의 수를 제한.
+</br>
 
 ```SQL
 SELECT TOP(2)
@@ -517,6 +517,7 @@ ORDER BY SAL DESC;
 |:-----:|:----:|
 |  KING | 5000 |
 | SCOTT | 3000 |
+</br>
 
 ```SQL
 SELECT TOP(2) WITH TIES -- 동일 수치의 데이터를 추가로 더 추출
@@ -528,19 +529,23 @@ ORDER BY SAL DESC;
 |  KING | 5000 |
 | SCOTT | 3000 |
 |  FORD | 3000 |
-
+</br>
 
 #### ROW LIMITING 절
+Oracle 12.1, SQL Server 2012 이상부터 ROW LIMITING으로 TOP N 쿼리를 작성할 수 있음. ORDER BY 절 다음에 기술하며 ORDER BY 절과 함께 수행됨.
 
-</br>Oracle 12.1, SQL Server 2012 이상부터 ROW LIMITING으로 TOP N 쿼리를 작성할 수 있음. ORDER BY 절 다음에 기술하며 ORDER BY 절과 함께 수행됨.
+</br>
 
 `[OFFSET offset {ROW | ROWS}]`
+
 `[FETCH {FIRST | NEXT} [{rowcount | percent PERCENT}] {ROW | ROWS} {ONLY | WITH TIES}]`
 
+</br>
 - OFFSET offset : 건너뛸 행의 개수 지정
 - FETCH : 반환할 행의 개수나 백분율 지정
 - ONLY : 지정된 행의 개수나 백분율 만큼 행 반환
 - WITH TIES : 마지막 행에 대한 동순위를 포함해서 반홪
+</br>
 
 ```SQL
 SELECT EMPNO, SAL 
@@ -554,6 +559,7 @@ ORDER BY SAL, EMPNO FETCH FIRST 5 ROWS ONLY;
 |  7876 | 1100 |
 |  7654 | 1250 |
 |  7521 | 1250 |
+</br>
 
 ```SQL
 SELECT EMPNO, SAL
@@ -572,12 +578,14 @@ ORDER BY SAL, EMPNO OFFSET 5 ROWS; -- 상위 5개 행을 건너뜀
 ### 계층형 질의와 셀프 조인
 
 #### 계층형 데이터?
-</br>동일 테이블에 계층적으로 상위와 하위 데이터가 포함된 데이터 (관리자-사원 관계, 상위조직-하위조직 관계)
+동일 테이블에 계층적으로 상위와 하위 데이터가 포함된 데이터 (관리자-사원 관계, 상위조직-하위조직 관계)
+</br>
 
 #### 셀프조인
-</br>동일 테이블 사이의 조인. FROM 절에 동일 테이블이 두 번 이상 나타남.
+동일 테이블 사이의 조인. FROM 절에 동일 테이블이 두 번 이상 나타남.
 </br>동일 테이블 사이의 조인을 수행하기 위해서는 `테이블 식별을 위해 Alias 사용 필수` 
 </br>셀프조인은 동일한 테이블이지만, 개념적으로는 두 개의 서로 다른 테이블을 사용하는 것과 동일함
+</br>
 
 ```SQL
 -- JONES의 자식노드를 조회하는 쿼리
@@ -590,7 +598,7 @@ WHERE MANAGER.ENAME = 'JONES'
 |:-----:|:-----:|------|
 |  7788 | SCOTT | 7566 |
 |  7902 |  FORD | 7566 |
-
+</br>
 
 ```SQL
 -- JONES의 자식노드의 자식노드를 조회하는 쿼리
@@ -605,7 +613,7 @@ WHERE MANAGER.ENAME = 'JONES'
 |:-----:|:-----:|:----:|
 |  7369 | SMITH | 7902 |
 |  7876 | ADAMS | 7788 |
-
+</br>
 
 ```SQL
 -- SMITH의 부모노드를 조회하는 쿼리
@@ -617,6 +625,7 @@ SELECT MANAGER.EMPNO, MANAGER.ENAME, MANAGER.MGR
 | EMPNO | ENAME |  MGR |
 |:-----:|:-----:|:----:|
 |  7902 |  FORD | 7566 |
+</br>
 
 ```SQL
 -- SMITH의 부모노드의 부모노드를 조회하는 쿼리
@@ -629,31 +638,35 @@ SELECT MANAGER.EMPNO, MANAGER.ENAME, MANAGER.MGR
 | EMPNO | ENAME |  MGR |
 |:-----:|:-----:|:----:|
 |  7566 | JONES | 7839 |
-
+</br>
 
 #### 계층형 질의
 
 1. Oracle 계층형 질의
     
-    1. START WITH 절 : 계층구조전개의 시작위치를 지정하는 구문
+    - START WITH 절 : 계층구조전개의 시작위치를 지정하는 구문
     
-    2. CONNECT BY 절 : 다음에 전개될 자식 데이터를 지정하는 구문
+    - CONNECT BY 절 : 다음에 전개될 자식 데이터를 지정하는 구문
     
-    3. PRIOR 절 : CONNECT BY 절에 사용되며, 현재 읽은 칼럼을 지정
+    - PRIOR 절 : CONNECT BY 절에 사용되며, 현재 읽은 칼럼을 지정
         - (FK) = PRIOR (PK) : 순방향 전개
         - (PK) = PRIOR (FK) : 역방향 전개
     
-    4. NOCYCLE : 이미 나타났던 동일한 데이터가 전개 중에 다시 나타날때 사이클(CYCLE)이 발생했다고 함. 사이클이 발생하면 런타임 오류가 발생하게 되는데, `NOCYCLE을 추가하면 오류를                  발생시키지 않고 사이클이 발생한 이후의 데이터를 전개하지 않음`
+    - NOCYCLE : 이미 나타났던 동일한 데이터가 전개 중에 다시 나타날때 사이클(CYCLE)이 발생했다고 함. 사이클이 발생하면 런타임 오류가 발생하게 되는데, `NOCYCLE을 추가하면 오류를                  발생시키지 않고 사이클이 발생한 이후의 데이터를 전개하지 않음`
     
-    5. ORDER SIBLINGS BY : 형제 노드(동일 LEVEL) 사이에서 정렬 수행
+    - ORDER SIBLINGS BY : 형제 노드(동일 LEVEL) 사이에서 정렬 수행
     
-    6. WHERE : 모든 전개를 수행한 후 지정된 조건을 만족하는 데이터만 추출(필터링)
-
+    - WHERE : 모든 전개를 수행한 후 지정된 조건을 만족하는 데이터만 추출(필터링)
+</br>
 
 2. Oracle 계층형 질의에서 사용되는 가상 칼럼
-    1. LEVEL : 루트 테이터는 1, 그 하위 데이터는 2. 리프(LEAF) 데이터까지 1씩 증가
-    2. CONNECT_BY_ISLEAF : 전개 과정ㅁ에서 해당 데이터가 리프 데이터면 1, 그렇지 않으면 0
-    3. CONNECT_BY_ISCYCLE : 전개 과정에서 자식을 갖는데, 해당 데이터가 조상으로서 존재하면 1, 그렇지 않으면 0 (CYCLE 옵션 사용할때만 사용 가능)
+
+    - LEVEL : 루트 테이터는 1, 그 하위 데이터는 2. 리프(LEAF) 데이터까지 1씩 증가
+    
+    - CONNECT_BY_ISLEAF : 전개 과정ㅁ에서 해당 데이터가 리프 데이터면 1, 그렇지 않으면 0
+    
+    - CONNECT_BY_ISCYCLE : 전개 과정에서 자식을 갖는데, 해당 데이터가 조상으로서 존재하면 1, 그렇지 않으면 0 (CYCLE 옵션 사용할때만 사용 가능)
+</br>
 
 ```SQL
 SELECT  LEVEL AS LV, LPAD (' ', (LEVEL - 1) * 2) || EMPNO AS EMPNO, MGR
@@ -678,14 +691,139 @@ CONNECT BY MGR = PRIOR EMPNO;
 |  3 |  7900 | 7698 |      1 |
 |  2 |  7782 | 7839 |      0 |
 |  3 |  7934 | 7782 |      1 |
+</br>
 
 <img src="./src/forward.png" alt="순방향 예시" width="500" height="600">
+</br>
+
+```SQL
+SELECT  LEVEL AS LV, LPAD (' ', (LEVEL - 1) * 2) || EMPNO AS EMPNO, MGR
+        , CONNECT_BY_ISLEAF AS ISLEAF
+  FROM EMP
+START WITH MGR = 7876
+CONNECT BY EMPNO = PRIOR MGR;
+```
+| LV | EMPNO |  MGR | ISLEAF |
+|:--:|:-----:|:----:|:------:|
+|  1 |  7876 | 7788 |    0   |
+|  2 |  7788 | 7566 |    0   |
+|  3 |  7566 | 7839 |    0   |
+|  4 |  7839 |      |    1   |
+</br>
+
+<img src="./src/backward.png" alt="역방향 예시" width="500" height="600">
 
 ---
 
-<h4> 7) PIVOT 절과 UNPIVOT 절 </h4>
-<details>
-</details>
+### PIVOT 절과 UNPIVOT 절
+
+#### PIVOT 절
+행을 열로 전환
+</br>
+
+```SQL
+SELECT *
+  FROM (SELECT JOB, DEPTNO, SAL FROM EMP
+ PIVOT (SUM(SAL) FOR DEPTNO IN (10, 20, 30))
+ORDER BY 1;
+```
+|    JOB    |  10  |  20  |  30  |
+|:---------:|:----:|:----:|:----:|
+|  ANALYST  |      | 6000 |      |
+|   CLERK   | 1300 | 1900 |  950 |
+|  MANAGER  | 2450 | 2975 | 2850 |
+| PRESIDENT | 5000 |      |      |
+|  SALESMAN |      |      | 5600 |
+</br>
+
+```SQL
+-- 집계함수와 IN 절에 별칭 지정. 별칭을 지정하면 결과 집합의 열 명이 변경됨
+SELECT *
+  FROM (SELECT JOB, DEPTNO, SAL FROM EMP)
+ PIVOT (SUM(SAL) AS SAL FOR DEPTNO IN (10 AS D10, 20 AS D20, 30 AS D30))
+ORDER BY 1;
+```
+|    JOB    | D10_SAL | D20_SAL | D30_SAL |
+|:---------:|:-------:|:-------:|:-------:|
+|  ANALYST  |         |    6000 |         |
+|   CLERK   |    1300 |    1900 |     950 |
+|  MANAGER  |    2450 |    2975 |    2850 |
+| PRESIDENT |    5000 |         |         |
+|  SALESMAN |         |         |    5600 |
+</br>
+
+```SQL
+-- PIVOT 절을 사용할 수 없는 경우, 집계함수와 CASE 표현식으로 PIVOT 수행
+SELECT  JOB
+      , SUM (CASE DEPTNO WHEN 10 THEN SAL END) AS D10_SAL
+      , SUM (CASE DEPTNO WHEN 20 THEN SAL END) AS D20_SAL
+      , SUM (CASE DEPTNO WHEN 30 THEN SAL END) AS D30_SAL
+  FROM EMP
+GROUP BY JOB
+ORDER BY JOB;
+```
+</br>
+
+#### UNPIVOT 절
+열을 행으로 전환
+
+</br>
+만약, 다음과 같이 조회되는 테이블이 있을때 UNPIVOT을 수행해보자.
+
+```SQL
+SELECT * FROM T1 ORDER BY JOB;
+```
+|   JOB   | D10_SAL | D20_SAL | D10_CNT | D20_CNT |
+|:-------:|:-------:|:-------:|:-------:|:-------:|
+| ANALYST |         |    6000 |       0 |       2 |
+|  CLERK  |    1300 |    1900 |       1 |       2 |
+</br>
+
+```SQL
+-- D10_SAL, D20_SAL 열이 행으로 전환
+SELECT JOB, DEPTNO, SAL
+  FROM T1
+UNPIVOT (SAL FOR DEPTNO IN (D10_SAL, D20_SAL))
+ORDER BY 1, 2;
+```
+|   JOB   |  DEPTNO |  SAL |
+|:-------:|:-------:|:----:|
+| ANALYST | D20_SAL | 6000 |
+|  CLERK  | D10_SAL | 1900 |
+|  CLERK  | D20_SAL | 1900 |
+</br>
+
+```SQL
+-- IN 절에 별칭을 지정하면 지정한 열의 값 변경 가능
+SELECT JOB, DEPTNO, SAL
+  FROM T1
+UNPIVOT (SAL FOR DEPTNO IN (D10_SAL AS 10, D20_SAL AS 20)
+ORDER BY 1M2;
+```
+|   JOB   | DEPTNO |  SAL |
+|:-------:|:------:|:----:|
+| ANALYST |     20 | 6000 |
+|  CLERK  |     10 | 1300 |
+|  CLERK  |     20 | 1900 |
+</br>
+
+```SQL
+-- UNPIVOT 절을 사용할 수 없는 경우, 카티션 곱을 사용해 수행할 수 있다.
+-- UNPIVOT 할 열의 개수만큼 행을 복제하고, CASE 표현식으로 UNPIVOT할 열을 선택하는 방식
+SELECT A.JOB
+     , CASE B.LV WHEN 1 THEN 10         WHEN 2 THEN 20          END AS DEPTNO
+     , CASE B.LV WHEN 1 THEN A.D10_SAL  WHEN 2 THEN A.D20_SAL   END AS SAL
+     , CASE B.LV WHEN 1 THEN A.D10_CNT  WHEN 2 THEN A.D20_CNT   END AS CNT
+  FROM T1 A
+        , (SELECT LEVEL AS LV FROM DUAL CONNECT BY LEVEL <= 2 ) B
+ORDER BY 1, 2;
+```
+|   JOB   | DEPTNO |  SAL | CNT |
+|:-------:|:------:|:----:|-----|
+| ANALYST |     10 |      |   0 |
+| ANALYST |     20 | 6000 |   2 |
+|  CLERK  |     10 | 1300 |   1 |
+|  CLERK  |     20 | 1900 |   2 |
 
 ---
 
