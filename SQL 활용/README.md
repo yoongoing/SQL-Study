@@ -1038,12 +1038,14 @@ $ : 문자열의 끝
 
 1. REGEXP_LIKE 조건
     </br>: source_char가 pattern과 일치하면 True, 아니면 False
+    </br>
     </br>`REGEXP_LIKE (source_char, pattern [, match_param])`
     </br>
 
     - source_char   : 검색 문자열 지정
     - pattern       : 검색 패턴 지정
     - mamtch_param  : 일치 옵션 지정 (기본값은 c)
+    - 
       - i : 대소문자 무시
       - c : 대소문자 구분
       - n : dot(.)을 개행 문자와 일치
@@ -1053,6 +1055,7 @@ $ : 문자열의 끝
 
 2. REGEXP_REPLACE 함수
     </br>: source_char에서 일치한 pattern을 replace_string으로 변경한 문자값을 반환
+    </br>
     </br>`REGEXP_REPLACE (source_char, pattern [, replace_string [, position [, occurence [, match_param]]]])`
     </br>
 
@@ -1063,6 +1066,7 @@ $ : 문자열의 끝
 
 3. REGEXP_SUBSTR 함수
     </br>: source_char에서 일치한 pattern반환
+    </br>
     </br>`REGEXP_SUBSTR (source_char, pattern [, position [, occurence [, match_param [, subexpr]]]])`
     </br>
 
@@ -1071,6 +1075,7 @@ $ : 문자열의 끝
 
 4. REGEXP_INSTR 함수
     </br>: source_char에서 일치한 pattern의 시작위치를 정수로 반환
+    </br>
     </br>`REGEXP_INSTR (source_char, pattern [, position [, occurence [, return_opt [, match_param [, subexpr]]]]])`
     </br>
 
@@ -1079,6 +1084,7 @@ $ : 문자열의 끝
 
 5. REGEXP_COUNT 함수 
     </br>: source_char에서 일치한 pattern의 횟수를 반환
+    </br>
     </br>`REGEXP_COUNT (source_char, pattern [, position [, match_param]])`
     </br>
 
