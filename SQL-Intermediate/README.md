@@ -11,17 +11,17 @@
 
 #### ✔ 동작되는 방식에 따른 서브쿼리 분류
 
-1. Un_Correlated(비연관) 서브쿼리
+1. **Un_Correlated(비연관) 서브쿼리**
     </br>서브쿼리가 메인쿼리 **칼럼을 갖고 있지 않은 형태**, 메인쿼리에 값을 제공하기 위한 목적
     
-2. Correlatied(연관) 서브쿼리
+2. **Correlatied(연관) 서브쿼리**
     </br>서브쿼리가 메인쿼리 **칼럼을 갖고있는 형태**, 메인쿼리가 서브쿼리에서 조건이 맞는지 확인하기 위한 목적
 </br>
 
 
 #### ✔ 반환되는 데이터의 형태에 따른 서브쿼리 분류
 
-1. 단일행 서브쿼리
+1. **단일행 서브쿼리**
     </br>단일 행 비교 연산자(=, <, <=, >, >=, <>)와 함께 사용되며, 서브쿼리의 결과 건수는 반드시 **1건 이하**일것 (2건 이상 반환시 Run Time 오류)
     
     ```SQL
@@ -34,7 +34,7 @@
     ```
 </br>
 
-2. 다중행 서브쿼리
+2. **다중행 서브쿼리**
     </br>서브쿼리의 **결과가 2건 이상 반환** 된다면, 다중행 비교 연산자(IN, ALL, ANY, SOME)과 함께 사용
      
     ```SQL
@@ -52,7 +52,7 @@
     ```
 </br>
 
-3. 다중 칼럼 서브쿼리
+3. **다중 칼럼 서브쿼리**
     </br>**여러 개의 칼럼이 반환**되어 메인쿼리의 조건과 동시에 비교됨. (SQL Server에서는 지원안함)
     
     ```SQL
@@ -66,7 +66,7 @@
     ```
 </br>    
    
-4. 연관 서브쿼리
+4. **연관 서브쿼리**
     </br>서브쿼리 내에  **메인쿼리 칼럼이 사용된** 서브쿼리
     
     ```SQL
@@ -91,7 +91,7 @@
     ```
 </br>    
     
-5. 그 밖의 위치에서 사용하는 서브쿼리
+5. **그 밖의 위치에서 사용하는 서브쿼리**
 
     1. SELECT 절에 서브쿼리 (**스칼라 서브쿼리**, Scalar Subquery)
         
@@ -114,11 +114,11 @@
 
 #### ✔ 뷰 특징
 
-- 독립성 : 테이블 구조가 변경돼도 뷰를 사용하는 응용 프로그램은 변경하지 않음
+- **독립성** : 테이블 구조가 변경돼도 뷰를 사용하는 응용 프로그램은 변경하지 않음
 
-- 편리성 : 복잡한 질의를 뷰로 생성함으로써 관련 질의를 단순하게 작성 가능
+- **편리성** : 복잡한 질의를 뷰로 생성함으로써 관련 질의를 단순하게 작성 가능
 
-- 보안성 : 숨기고 싶은 정보가 있다면, 뷰를 생성할 때 해당 칼럼을 제외하고 생성 가능
+- **보안성** : 숨기고 싶은 정보가 있다면, 뷰를 생성할 때 해당 칼럼을 제외하고 생성 가능
 
 ```SQL
 -- VIEW 생성
@@ -142,16 +142,16 @@ WHERE PLAYER_NAME = '윤%';
 **여러 개의 결과 집합 간의 연산을 통해 결합**하는 방식
 </br>
 
-1. UNION
+1. **UNION**
 </br>합집한 연산 수행, **중복 제거** 
     
-2. UNION ALL
+2. **UNION ALL**
 </br>합집합 연산 수행, **중복 허용**
   
-3. INTERSECT
+3. **INTERSECT**
 </br>교집합 연산 수행, **중복 제거**
   
-1. EXCEPT
+4. **EXCEPT**
 </br>차집합 연산 수행, **중복 제거**
 </br>
 
@@ -173,7 +173,7 @@ ANSI/ISO SQL 표준은 데이터 분석을 위해 다음의 3가지 함수를 �
     </br>ANALYTIC FUNCTION, RANK FUNCTION
 </br>
 
-1. ROLLUP 함수
+1. **ROLLUP 함수**
     - ROLLUP에 지정된 Grouping Columns의 List는 Subtotal을 생성하기 위함
     - Grouping Columns의 수가 N이면, **N+1 Level**의 Subtotal 생성
     - 인수 순서가 바뀌면 수행결과도 바뀜
@@ -225,7 +225,7 @@ ANSI/ISO SQL 표준은 데이터 분석을 위해 다음의 3가지 함수를 �
     |            |           |    14   | 29025  | -- **L3**
  </br>
  
-2. CUBE 함수
+2. **CUBE 함수**
     - 명시한 모든 칼럼에 대해 Subtotal 생성
     - GROUPING COLUMNS의 수가 N, 2^N승 Subtotal 생성
     - ROLLUP에 비해 시스템에 부하를 줌
@@ -285,7 +285,7 @@ ANSI/ISO SQL 표준은 데이터 분석을 위해 다음의 3가지 함수를 �
     |            |           |    14   |  29025 |
 </br>
 
-3. GROUPING SETS 함수
+3. **GROUPING SETS 함수**
     - 표시된 인수들에 대한 개별 집계를 구할수 있음
     - 인수의 순서가 바뀌어도 결과 같음
     </br>
@@ -351,14 +351,14 @@ ANSI/ISO SQL 표준은 데이터 분석을 위해 다음의 3가지 함수를 �
 
 ##### ➕ 그룹 내 순위 함수
 
-1. RANK 함수
+1. **RANK 함수**
     </br>: ORDER BY를 포함한 QUERY문에서 특정 항목에 대한 순위를 구하는 함수 
     </br>`동일한 값에 대해 동일한 순위 부여`
 
-2. DENSE_RANK 함수
+2. **DENSE_RANK 함수**
     </br>: RANK와 유사하지만, `동일한 순위를 하나의 건수로 취급`
     
-3. ROW_NUMBER 함수
+3. **ROW_NUMBER 함수**
     </br>: RANK나 DENSE_RANK는 동일한 값에 대해서는 동일한 순위를 부여하지만,
     </br>`동일한 값이라도 고유한 순위 부여`
     
@@ -376,25 +376,25 @@ ANSI/ISO SQL 표준은 데이터 분석을 위해 다음의 3가지 함수를 �
 
 ##### ➕ 그룹 내 집계 함수
 
-1. SUM 함수
+1. **SUM 함수**
     </br>: 파티션별 위도우의 합
     
-2. MAX 함수
+2. **MAX 함수**
     </br>: 파티션별 윈도우의 최댓값
     
-3. MIN 함수
+3. **MIN 함수**
     </br>: 파티션별 윈도우의 최댓값
     
-4. AVG 함수
+4. **AVG 함수**
     </br>: 파티션별 윈도우의 평균값, ROWS 윈도우를 통해 원하는 조건에 맞는 데이터에 대한 통계값 구할 수 있음
     
-5. COUNT 함수
+5. **COUNT 함수**
     </br>: 파티션별 윈도우의 카운트값 
 </br>
 
 ##### ➕ 그룹 내 행순서 관련 함수
 
-1. FIRST_VALUE 함수
+1. **FIRST_VALUE 함수**
     </br>: 파티션 별 윈도우에서 가장 먼저 나온 값 구함 (SQL Server에서 지원 안함)
     </br>  공동 등수를 인정하지 않고 처음 나온 행만 처리한다.
     
@@ -448,7 +448,7 @@ ANSI/ISO SQL 표준은 데이터 분석을 위해 다음의 3가지 함수를 �
     |     30 |  JAMES |  950 |   BLAKE  |
 </br>
 
-2. LAST_VALUE 함수
+2. **LAST_VALUE 함수**
     </br>: 파티션별 윈도우에서 가장 나중에 온 값 구함 (SQL Server에서 지원 안함)
 
     ```SQL
@@ -476,7 +476,7 @@ ANSI/ISO SQL 표준은 데이터 분석을 위해 다음의 3가지 함수를 �
     |     30 |  JAMES |  950 |   JAMES  |
 </br>
 
-3. LAG 함수
+3. **LAG 함수**
     </br>: 파티션별 윈도우에서 이전 몇 번째 행의 값을 가져옴 (SQL Server에서 지원 안함)
 
     ```SQL
@@ -509,7 +509,7 @@ ANSI/ISO SQL 표준은 데이터 분석을 위해 다음의 3가지 함수를 �
     | MARTIN | 1981-09-28 | 1250 |    1250 |
 </br>
 
-4. LEAD 함수
+4. **LEAD 함수**
     </br>: 파티션별 윈도우에서 이후 몇 번째 행의 값을 가져옴 (SQL Server에서 지원 안함)
 
 
@@ -531,7 +531,7 @@ ANSI/ISO SQL 표준은 데이터 분석을 위해 다음의 3가지 함수를 �
 
 ##### ➕ 그룹 내 비율 함수
 
-1. RATIO_TO_REPORT
+1. **RATIO_TO_REPORT**
     </br>: 파티션 내 전체 칼럼 값에 대한 행별 칼럼 값의 백분율을 소수점으로 구함
     </br>`0 < 결과 값 <= 1`
     
@@ -552,7 +552,7 @@ ANSI/ISO SQL 표준은 데이터 분석을 위해 다음의 3가지 함수를 �
     | TURNER | 1500 | 0.27 |
 </br>
 
-2. PERCENT_RANK
+2. **PERCENT_RANK**
     </br>: 파티션별 윈도우에서 제일 먼저 나오는것은 0, 제일 늦게 나오면 1로 하여 행의 순서별 백분율을 구함 (SQL Server에서 지원안함)
     </br>  같은 값은 같은 ORDER로 취급
     </br>`0 <= 결과 값 <= 1`
@@ -575,7 +575,7 @@ ANSI/ISO SQL 표준은 데이터 분석을 위해 다음의 3가지 함수를 �
     |   20   |  SMITH |  800 | 1.00 |
 </br>
 
-3. CUME_DIST
+3. **CUME_DIST**
     </br>: 파티션별 윈도우의 전체건수에서 현재 행보다 작거나 같은 건수에 대한 누적백분율을 구함
     </br>`0 < 결과 값 <= 1`
     
@@ -597,7 +597,7 @@ ANSI/ISO SQL 표준은 데이터 분석을 위해 다음의 3가지 함수를 �
     |   20   |  SMITH |  800 | 1.00 |
 </br> 
 
-4. NTILE 함수
+4. **NTILE 함수**
    </br>: 파티션별 전체 건수를 ARGUMENT값으로 N등분한 결과
    
    ```SQL
@@ -787,7 +787,7 @@ SELECT MANAGER.EMPNO, MANAGER.ENAME, MANAGER.MGR
 
 #### ✔ 계층형 질의
 
-1. Oracle 계층형 질의
+1. **Oracle 계층형 질의**
     
     - START WITH 절 : 계층구조전개의 시작위치를 지정하는 구문
     
@@ -804,7 +804,7 @@ SELECT MANAGER.EMPNO, MANAGER.ENAME, MANAGER.MGR
     - WHERE : 모든 전개를 수행한 후 지정된 조건을 만족하는 데이터만 추출(필터링)
 </br>
 
-2. Oracle 계층형 질의에서 사용되는 가상 칼럼
+2. **Oracle 계층형 질의에서 사용되는 가상 칼럼**
 
     - LEVEL : 루트 테이터는 1, 그 하위 데이터는 2. 리프(LEAF) 데이터까지 1씩 증가
     
@@ -980,7 +980,7 @@ ORDER BY 1, 2;
 문자열의 규칙을 표현하는 검색 패턴으로 주로 문자열 검색과 치환에 사용됨
 </br>
 
-1. POSIX 연산자
+1. **POSIX 연산자**
 
 ```TEXT
 . : 모든 문자와 일치
@@ -1124,7 +1124,6 @@ SELECT REGEXP_SUBSTR ('1a', '[0-9][a-z]') AS C1 -- 1a
   FROM DUAL;
 
 
--- 한문자만 일치하면 패턴이 일치한 것으로 처리
      -- [:digit:] : (= [0-9]) 숫자
 SELECT REGEXP_SUBSTR ('gF1,', '[[:digit:]]') AS C1 -- 1
 
@@ -1150,7 +1149,7 @@ SELECT REGEXP_SUBSTR ('gF1,', '[[:digit:]]') AS C1 -- 1
 
 </br>
 
-2. PERL 정규표현식 연산자
+2. **PERL 정규표현식 연산자**
 
 ```TEXT
 \d : (= [[:digit:]])    숫자                       
@@ -1240,7 +1239,7 @@ SELECT REGEXP_SUBSTR ('aaaa', 'a{2}?') AS C1 -- aa
 
 #### ✔ 정규 표현식 조건과 함수
 
-1. REGEXP_LIKE 조건
+1. **REGEXP_LIKE 조건**
     </br>: source_char가 `pattern과 일치하면 True, 아니면 False`
     </br>
     </br>`REGEXP_LIKE (source_char, pattern [, match_param])`
@@ -1268,7 +1267,7 @@ SELECT REGEXP_SUBSTR ('aaaa', 'a{2}?') AS C1 -- aa
     |   Steven   |   Markle  |
 </br>
 
-2. REGEXP_REPLACE 함수
+2. **REGEXP_REPLACE 함수**
     </br>: source_char에서 `일치한 pattern을 replace_string으로 변경한 문자값을 반환`
     </br>
     </br>`REGEXP_REPLACE (source_char, pattern [, replace_string [, position [, occurence [, match_param]]]])`
@@ -1292,7 +1291,7 @@ SELECT REGEXP_SUBSTR ('aaaa', 'a{2}?') AS C1 -- aa
     | 011.44.1344.429268 | 011.44.1344.429268 |
 </br>
 
-3. REGEXP_SUBSTR 함수
+3. **REGEXP_SUBSTR 함수**
     </br>: source_char에서 `일치한 pattern 반환`
     </br>
     </br>`REGEXP_SUBSTR (source_char, pattern [, position [, occurence [, match_param [, subexpr]]]])`
@@ -1322,7 +1321,7 @@ SELECT REGEXP_SUBSTR ('aaaa', 'a{2}?') AS C1 -- aa
 
 </br>
 
-4. REGEXP_INSTR 함수
+4. **REGEXP_INSTR 함수**
     </br>: source_char에서 일치한 `pattern의 시작위치를 정수로 반환`
     </br>
     </br>`REGEXP_INSTR (source_char, pattern [, position [, occurence [, return_opt [, match_param [, subexpr]]]]])`
@@ -1342,7 +1341,7 @@ SELECT REGEXP_SUBSTR ('aaaa', 'a{2}?') AS C1 -- aa
     | 1  |  4 |  7 |
 </br>
 
-5. REGEXP_COUNT 함수 
+5. **REGEXP_COUNT 함수** 
     </br>: source_char에서 `일치한 pattern의 횟수를 반환`
     </br>
     </br>`REGEXP_COUNT (source_char, pattern [, position [, match_param]])`
