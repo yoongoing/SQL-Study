@@ -1015,6 +1015,7 @@ $ : 문자열의 끝
 ```
 
 ```SQL
+-- . : 모든 문자와 일치
 SELECT REGEXP_SUBSTR ('aab', 'a.b') AS C1 -- aab
      , REGEXP_SUBSTR ('abb', 'a.b') AS C2 -- abb
      , REGEXP_SUBSTR ('acb', 'a.b') AS C3 -- acb
@@ -1022,6 +1023,7 @@ SELECT REGEXP_SUBSTR ('aab', 'a.b') AS C1 -- aab
   FROM DUAL;
 
 
+-- | : 대체 문자를 구분
 SELECT REGEXP_SUBSTR ('a', 'a|b') AS C1 -- a
      , REGEXP_SUBSTR ('b', 'a|b') AS C2
      , REGEXP_SUBSTR ('c', 'a|b') AS C3
@@ -1035,44 +1037,55 @@ SELECT REGEXP_SUBSTR ('a', 'a|b') AS C1 -- a
   FROM DUAL;
 
 
+-- \ : 다음 문자를 일반 문자로 취급
 SELECT REGEXP_SUBSTR ('a|b', 'a|b') AS C1 -- a
      , REGEXP_SUBSTR ('a|b', 'a\|b') AS C2 -- a|b
   FROM DUAL;
 
 
+-- ^ : 문자열의 시작
 SELECT REGEXP_SUBSTR ('ab'||CHR (10)||'cd', '^.', 1, 1) AS C1 -- a
      , REGEXP_SUBSTR ('ab'||CHR (10)||'cd', '^.', 1, 2) AS C2
 
+-- $ : 문자열의 끝
      , REGEXP_SUBSTR ('ab'||CHR (10)||'cd', '.$', 1, 1) AS C3 -- d
      , REGEXP_SUBSTR ('ab'||CHR (10)||'cd', '.$', 1, 2) AS C4 
   FROM DUAL;
 
 
+-- ? : 0회 또는 1회 일치
 SELECT REGEXP_SUBSTR ('ac', 'ab?c') AS C1 -- ac
      , REGEXP_SUBSTR ('abc', 'ab?c') AS C2 -- abc
      , REGEXP_SUBSTR ('abbc', 'ab?c') AS C3
-     
+
+-- * : 0회 또는 그 이상의 횟수로 일치     
      , REGEXP_SUBSTR ('ac', 'ab*c') AS C4 -- ac
      , REGEXP_SUBSTR ('abc', 'ab*c') AS C5 -- abc
      , REGEXP_SUBSTR ('abbc', 'ab*c') AS C6 -- abbc
 
+-- + : 1회 또는 그 이상의 횟수로 일치
      , REGEXP_SUBSTR ('ac', 'ab?c') AS C4
      , REGEXP_SUBSTR ('abc', 'ab?c') AS C5 -- abc
      , REGEXP_SUBSTR ('abbc', 'ab?c') AS C6 -- abbc
   FROM DUAL;
 
 
+-- {m} : m회 일치
 SELECT REGEXP_SUBSTR ('ab', 'a{2}') AS C1 
      , REGEXP_SUBSTR ('aab', 'a{2}') AS C2 -- aa
 
+-- {m,} : 최소 m회 일치
      , REGEXP_SUBSTR ('aab', 'a{3,}') AS C3
-     , REGEXP_SUBSTR ('aaab', 'a{3,}') AS C4 -- aaa
+-- {,m} : 최대 m회 일치
+     , REGEXP_SUBSTR ('aaab', 'a{,3}') AS C4 -- aaa
 
+-- {m,n} : 최소 m회, 최대 n회 일치
      , REGEXP_SUBSTR ('aaab', 'a{4,5}') AS C5
      , REGEXP_SUBSTR ('aaaab', 'a{4,5}') AS C6 -- aaaa
   FROM DUAL;
 
 
+-- (expr) : 괄호 안의 표현식을 하나의 단위로 취급
 SELECT REGEXP_SUBSTR ('ababc', '(ab)+c') AS C1 -- ababc
      , REGEXP_SUBSTR ('ababc', 'ab+c') AS C2 -- abc
      , REGEXP_SUBSTR ('abd', 'a(b|c)d') AS C3 -- abd
@@ -1080,6 +1093,7 @@ SELECT REGEXP_SUBSTR ('ababc', '(ab)+c') AS C1 -- ababc
   FROM DUAL;
 
 
+-- \n : n번째 서브 표현식과 일치, n은 1에서 9 사이의 정수
 SELECT REGEXP_SUBSTR ('abxab' , '(ab|cd)x\1') AS C1 -- abxab
      , REGEXP_SUBSTR ('cdxcd' , '(ab|cd)x\1') AS C2 -- cdxcd
      , REGEXP_SUBSTR ('abxef' , '(ab|cd)x\1') AS C3
@@ -1090,16 +1104,19 @@ SELECT REGEXP_SUBSTR ('abxab' , '(ab|cd)x\1') AS C1 -- abxab
   FROM DUAL;
 
 
+-- [char···] : 문자 리스트 중 한 문자와 일치
 SELECT REGEXP_SUBSTR ('ac', '[ab]c') AS C1 -- ac
      , REGEXP_SUBSTR ('bc', '[ab]c') AS C2 -- bc
      , REGEXP_SUBSTR ('cc', '[ab]c') AS C3
 
+-- [^char···]  : 문자 리스트에 포함되지 않은 한 문자와 일치
      , REGEXP_SUBSTR ('ac', '[^ab]c') AS C4
      , REGEXP_SUBSTR ('bc', '[^ab]c') AS C5
      , REGEXP_SUBSTR ('cc', '[^ab]c') AS C6 -- cc
   FROM DUAL;
 
 
+-- [:digit:] : (= [0-9]) 숫자
 SELECT REGEXP_SUBSTR ('1a', '[0-9][a-z]') AS C1 -- 1a
      , REGEXP_SUBSTR ('9z', '[0-9][a-z]') AS C2 -- 9z
      , REGEXP_SUBSTR ('aA', '[^0-9][^a-z]') AS C3 -- aA
@@ -1108,19 +1125,32 @@ SELECT REGEXP_SUBSTR ('1a', '[0-9][a-z]') AS C1 -- 1a
 
 
 -- 한문자만 일치하면 패턴이 일치한 것으로 처리
+     -- [:digit:] : (= [0-9]) 숫자
 SELECT REGEXP_SUBSTR ('gF1,', '[[:digit:]]') AS C1 -- 1
+
+     -- [:alpha:] : (= [a-zA-Z]) 영문자
      , REGEXP_SUBSTR ('gF1,', '[[:alpha:]]') AS C2 -- g
+
+     -- [:lower:] : (= [a-z]) 소문자
      , REGEXP_SUBSTR ('gF1,', '[[:lower:]]') AS C3 -- g
+
+     -- [:upper:] : (= [A-Z]) 대문자
      , REGEXP_SUBSTR ('gF1,', '[[:upper:]]') AS C4 -- F
+
+     -- [:alnum:] : (= [0-9a-zA-Z]) 영문자와 숫자
      , REGEXP_SUBSTR ('gF1,', '[[:alnum:]]') AS C5 -- g
+
+     -- [:xdigit:] : (= [0-9a-fA-F]) 16진수
      , REGEXP_SUBSTR ('gF1,', '[[:xdigit:]]') AS C6 -- F
+
+     -- [:punct:] : (= ^[:alnum:][:cntrl:]) 구두점 기호 
      , REGEXP_SUBSTR ('gF1,', '[[:punct:]]') AS C7 -- ,
   FROM DUAL;
 ```
 
 </br>
 
-1. PERL 정규표현식 연산자
+2. PERL 정규표현식 연산자
 
 ```TEXT
 \d : (= [[:digit:]])    숫자                       
@@ -1133,13 +1163,16 @@ SELECT REGEXP_SUBSTR ('gF1,', '[[:digit:]]') AS C1 -- 1
 ?? : 0회 또는 1회 일치
 *? : 0회 또는 그 이상의 횟수로 일치
 +? : 1회 또는 그 이상의 횟수로 일치
-{m}? : m회 일치
-{m,}? : 최소 m회 일치
-{,m}? : 최대 m회 일치
-{m,n}? : 최소 m회, 최대 n회 일치
+{m}?    : m회 일치
+{m,}?   : 최소 m회 일치
+{,m}?   : 최대 m회 일치
+{m,n}?  : 최소 m회, 최대 n회 일치
 ```
 
 ```SQL
+-- \d : (= [[:digit:]])    숫자
+-- \D : (= [^[:digit:]])   숫자가 아닌 모든 문자
+-- \w : (= [[:alnum:]_])   숫자와 영문자 (underbar 포함)
 SELECT REGEXP_SUBSTR ('(650) 555-0100', '^\(\d{3}\) \d{3}-\d{4}$') AS C1 -- (650) 555-0100
      , REGEXP_SUBSTR ('650-555-0100'  , '^\(\d{3}\) \d{3}-\d{4}$') AS C2
      , REGEXP_SUBSTR ('b2b', '\w\d\D') AS C3 -- b2b
@@ -1148,6 +1181,9 @@ SELECT REGEXP_SUBSTR ('(650) 555-0100', '^\(\d{3}\) \d{3}-\d{4}$') AS C1 -- (650
   FROM DUAL;
 
 
+-- \s : (= [[:space:]])    공백 문자
+-- \w : (= [[:alnum:]_])   숫자와 영문자 (underbar 포함)
+-- \W : (= [^[:alnum:]_])  숫자와 영문자가 아닌 모든 문자 (underbar 제외)
 SELECT REGEXP_SUBSTR ('jdoe@company.co.uk', '\w+\@\w+(\.\w+)+') AS C1 -- jdoe@company.co.uk
      , REGEXP_SUBSTR ('jdoe@company'      , '\w+\@\w+(\.\w+)+') AS C2
      , REGEXP_SUBSTR ('to: bill', '\w+\W\s\w+') AS C3 -- to: bill
@@ -1155,6 +1191,8 @@ SELECT REGEXP_SUBSTR ('jdoe@company.co.uk', '\w+\@\w+(\.\w+)+') AS C1 -- jdoe@co
   FROM DUAL;
 
 
+-- \s : (= [[:space:]])    공백 문자
+-- \w : (= [[:alnum:]_])   숫자와 영문자 (underbar 포함)
 SELECT REGEXP_SUBSTR ('(a b )', '\(\w\s\w\s\)') AS C1 -- (a b )
      , REGEXP_SUBSTR ('(a b )', '\(\w\S\w\S\)') AS C2
      , REGEXP_SUBSTR ('(a,b.)', '\(\w\s\w\s\)') AS C3
@@ -1162,25 +1200,38 @@ SELECT REGEXP_SUBSTR ('(a b )', '\(\w\s\w\s\)') AS C1 -- (a b )
   FROM DUAL;
 
 
--- PERL 방식 : 패턴을 최소로 일치시키는 비탐욕적(nongreedy) 방식으로 동작
 -- POSIX 방식 : 패턴을 최대로 일치시키는 탐욕적(greedy) 방식으로 동작
+-- PERL 방식 : 패턴을 최소로 일치시키는 비탐욕적(nongreedy) 방식으로 동작
+    
+     -- ? : 0회 또는 1회 일치
+     -- ?? : 0회 또는 1회 일치
 SELECT REGEXP_SUBSTR ('aaaa', 'a??aa') AS C1 -- aa
      , REGEXP_SUBSTR ('aaaa', 'a?aa') AS C2 -- aaa
-
+     
+     -- * : 0회 또는 그 이상의 횟수로 일치
+     -- *? : 0회 또는 그 이상의 횟수로 일치
      , REGEXP_SUBSTR ('xaxbxc', '\w*?x\w') AS C3 -- xa
      , REGEXP_SUBSTR ('xaxbxc', '\w*x\w') AS C4 -- xaxbxc
      
+     -- + : 1회 또는 그 이상의 횟수로 일치
+     -- +? : 1회 또는 그 이상의 횟수로 일치
      , REGEXP_SUBSTR ('abxcxd', '\w+?x\w') AS C5 -- abxc 
      , REGEXP_SUBSTR ('abxcxd', '\w+x\w') AS C6 -- abxcxd
   FROM DUAL;
 
 
+     -- {m} : m회 일치
+     -- {m}? : m회 일치
 SELECT REGEXP_SUBSTR ('aaaa', 'a{2}?') AS C1 -- aa
      , REGEXP_SUBSTR ('aaaa', 'a{2}') AS C2 -- aa
-
+    
+     -- {m,}   : 최소 m회 일치
+     -- {m,}?   : 최소 m회 일치
      , REGEXP_SUBSTR ('aaaaa', 'a{2,}?') AS C3 -- aa
      , REGEXP_SUBSTR ('aaaaa', 'a{2,}') AS C4 -- aaaaa
 
+     -- {m,n}  : 최소 m회, 최대 n회 일치
+     -- {m,n}?  : 최소 m회, 최대 n회 일치
      , REGEXP_SUBSTR ('aaaaa', 'a{2,4}?') AS C5 -- aa
      , REGEXP_SUBSTR ('aaaaa', 'a{2,4}') AS C6 -- aaaa
   FROM DUAL;
@@ -1203,6 +1254,7 @@ SELECT REGEXP_SUBSTR ('aaaa', 'a{2}?') AS C1 -- aa
       - n : dot(.)을 개행 문자와 일치
       - m : 다중행 모드
       - x : 검색 패턴의 공백 문자 무시
+    </br>
 
     ```SQL
     SELECT FIRST_NAME, LAST_NAME
@@ -1225,6 +1277,7 @@ SELECT REGEXP_SUBSTR ('aaaa', 'a{2}?') AS C1 -- aa
     - replace_string    : 변경 문자열 지정
     - position          : 검색 시작 위치 지정 (기본값은 1)
     - occurrence        : 패턴 일치 횟수 지정 (기본값은 1)
+    </br>
 
     ```SQL
     SELECT PHONE_NUMBER
@@ -1246,7 +1299,8 @@ SELECT REGEXP_SUBSTR ('aaaa', 'a{2}?') AS C1 -- aa
     </br>
 
     - substr : 서브 표현식을 지정 (0은 전체 패턴 / 1 이상은 서브표현식 / 기본값은 0)
-    
+    </br>
+
     ```SQL
     SELECT REGEXP_SUBSTR ('http://www.example.com/products', 'http://([[:alnum:]]+\.?){3,4}/?') AS C1
       FROM DUAL;
@@ -1268,13 +1322,14 @@ SELECT REGEXP_SUBSTR ('aaaa', 'a{2}?') AS C1 -- aa
 
 </br>
 
-3. REGEXP_INSTR 함수
+4. REGEXP_INSTR 함수
     </br>: source_char에서 일치한 `pattern의 시작위치를 정수로 반환`
     </br>
     </br>`REGEXP_INSTR (source_char, pattern [, position [, occurence [, return_opt [, match_param [, subexpr]]]]])`
     </br>
 
     - return_opt : 반환 옵션 지정 (0은 시작 위치 / 1은 다음 위치 / 기본값은 0)
+    </br>
 
     ```SQL
     SELECT REGEXP_INSTR ('1234567890', '(123)(4(56)(78))', 1, 1, 0, 'i', 1) AS C1
@@ -1292,7 +1347,8 @@ SELECT REGEXP_SUBSTR ('aaaa', 'a{2}?') AS C1 -- aa
     </br>
     </br>`REGEXP_COUNT (source_char, pattern [, position [, match_param]])`
     </br>
-
+    </br>
+    
     ```SQL
     SELECT REGEXP_COUNT ('123123123123123', '123', 1) AS C1
          , REGEXP_COUNT ('123123123123', '123', 3) AS C2
@@ -1301,7 +1357,7 @@ SELECT REGEXP_SUBSTR ('aaaa', 'a{2}?') AS C1 -- aa
     | A1 | A2 |
     |:--:|:--:|
     |  5 |  3 |
-    
+
 ---
 
 ### Reference
