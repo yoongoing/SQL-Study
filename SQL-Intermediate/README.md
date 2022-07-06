@@ -982,7 +982,7 @@ ORDER BY 1, 2;
 
 1. POSIX 연산자
 
-``TEXT
+```TEXT
 . : 모든 문자와 일치
 | : 대체 문자를 구분
 \ : 다음 문자를 일반 문자로 취급
@@ -1190,7 +1190,7 @@ SELECT REGEXP_SUBSTR ('aaaa', 'a{2}?') AS C1 -- aa
 #### ✔ 정규 표현식 조건과 함수
 
 1. REGEXP_LIKE 조건
-    </br>: source_char가 pattern과 일치하면 True, 아니면 False
+    </br>: source_char가 `pattern과 일치하면 True, 아니면 False`
     </br>
     </br>`REGEXP_LIKE (source_char, pattern [, match_param])`
     </br>
@@ -1203,10 +1203,21 @@ SELECT REGEXP_SUBSTR ('aaaa', 'a{2}?') AS C1 -- aa
       - n : dot(.)을 개행 문자와 일치
       - m : 다중행 모드
       - x : 검색 패턴의 공백 문자 무시
+
+    ```SQL
+    SELECT FIRST_NAME, LAST_NAME
+      FROM HR.EMPLOYEES
+     WHERE REGEXP_LIKE (FIRST_NAME, '^Ste(v|ph)en$');
+    ```
+    | FIRST_NAME | LAST_NAME |
+    |:----------:|:---------:|
+    |   Stephen  |   Stiles  |
+    |   Steven   |    King   |
+    |   Steven   |   Markle  |
 </br>
 
-1. REGEXP_REPLACE 함수
-    </br>: source_char에서 일치한 pattern을 replace_string으로 변경한 문자값을 반환
+2. REGEXP_REPLACE 함수
+    </br>: source_char에서 `일치한 pattern을 replace_string으로 변경한 문자값을 반환`
     </br>
     </br>`REGEXP_REPLACE (source_char, pattern [, replace_string [, position [, occurence [, match_param]]]])`
     </br>
@@ -1214,32 +1225,83 @@ SELECT REGEXP_SUBSTR ('aaaa', 'a{2}?') AS C1 -- aa
     - replace_string    : 변경 문자열 지정
     - position          : 검색 시작 위치 지정 (기본값은 1)
     - occurrence        : 패턴 일치 횟수 지정 (기본값은 1)
+
+    ```SQL
+    SELECT PHONE_NUMBER
+         , REGEXP_REPLACE (PHONE_NUMBER, '([[:digit:]]{3})\.([[:digit:]]{3})\.([[:digit:]]{4})'
+                                       , '(\1) \2-\3') AS C1
+      FROM HR.EMPLOYEES
+     WHERE EMPLOYEE_ID IN (144, 145);
+    ```
+    |    PHONE_NUMBER    |         C1         |
+    |:------------------:|:------------------:|
+    |    650.121.2004    |   (650) 121-2004   |
+    | 011.44.1344.429268 | 011.44.1344.429268 |
 </br>
 
 3. REGEXP_SUBSTR 함수
-    </br>: source_char에서 일치한 pattern반환
+    </br>: source_char에서 `일치한 pattern 반환`
     </br>
     </br>`REGEXP_SUBSTR (source_char, pattern [, position [, occurence [, match_param [, subexpr]]]])`
     </br>
 
     - substr : 서브 표현식을 지정 (0은 전체 패턴 / 1 이상은 서브표현식 / 기본값은 0)
+    
+    ```SQL
+    SELECT REGEXP_SUBSTR ('http://www.example.com/products', 'http://([[:alnum:]]+\.?){3,4}/?') AS C1
+      FROM DUAL;
+    ```
+    |            C1           |
+    |:-----------------------:|
+    | http://www.example.com/ |
+    </br>
+
+    ```SQL
+    -- 서브표현식의 순서는 좌측 괄호의 순서와 동일
+    SELECT REGEXP_SUBSTR ('1234567890', '(123)(4(56)(78))', 1, 1, 'i', 1) AS C1
+         , REGEXP_SUBSTR ('1234567890', '(123)(4(56)(78))', 1, 1, 'i', 4) AS C2
+      FROM DUAL;
+    ```
+    |  C1 | C2 |
+    |:---:|:--:|
+    | 123 | 78 |
+
 </br>
 
-4. REGEXP_INSTR 함수
-    </br>: source_char에서 일치한 pattern의 시작위치를 정수로 반환
+3. REGEXP_INSTR 함수
+    </br>: source_char에서 일치한 `pattern의 시작위치를 정수로 반환`
     </br>
     </br>`REGEXP_INSTR (source_char, pattern [, position [, occurence [, return_opt [, match_param [, subexpr]]]]])`
     </br>
 
     - return_opt : 반환 옵션 지정 (0은 시작 위치 / 1은 다음 위치 / 기본값은 0)
+
+    ```SQL
+    SELECT REGEXP_INSTR ('1234567890', '(123)(4(56)(78))', 1, 1, 0, 'i', 1) AS C1
+         , REGEXP_INSTR ('1234567890', '(123)(4(56)(78))', 1, 1, 0, 'i', 2) AS C2
+         , REGEXP_INSTR ('1234567890', '(123)(4(56)(78))', 1, 1, 0, 'i', 4) AS C3
+      FROM DUAL;
+    ```
+    | C1 | C2 | C3 |
+    |----|:--:|:--:|
+    | 1  |  4 |  7 |
 </br>
 
 5. REGEXP_COUNT 함수 
-    </br>: source_char에서 일치한 pattern의 횟수를 반환
+    </br>: source_char에서 `일치한 pattern의 횟수를 반환`
     </br>
     </br>`REGEXP_COUNT (source_char, pattern [, position [, match_param]])`
     </br>
 
+    ```SQL
+    SELECT REGEXP_COUNT ('123123123123123', '123', 1) AS C1
+         , REGEXP_COUNT ('123123123123', '123', 3) AS C2
+      FROM DUAL;
+    ```
+    | A1 | A2 |
+    |:--:|:--:|
+    |  5 |  3 |
+    
 ---
 
 ### Reference
