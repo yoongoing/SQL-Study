@@ -3,13 +3,13 @@
 
 ### [제1절] 서브쿼리
 
-#### 서브쿼리?
+#### ✔ 서브쿼리?
 
 하나의 SQL 문안에 포함되어 있는 또 다른 SQL
 
 </br>
 
-#### 동작되는 방식에 따른 서브쿼리 분류
+#### ✔ 동작되는 방식에 따른 서브쿼리 분류
 
 1. Un_Correlated(비연관) 서브쿼리
     </br>서브쿼리가 메인쿼리 **칼럼을 갖고 있지 않은 형태**, 메인쿼리에 값을 제공하기 위한 목적
@@ -19,7 +19,7 @@
 </br>
 
 
-#### 반환되는 데이터의 형태에 따른 서브쿼리 분류
+#### ✔ 반환되는 데이터의 형태에 따른 서브쿼리 분류
 
 1. 단일행 서브쿼리
     </br>단일 행 비교 연산자(=, <, <=, >, >=, <>)와 함께 사용되며, 서브쿼리의 결과 건수는 반드시 **1건 이하**일것 (2건 이상 반환시 Run Time 오류)
@@ -107,12 +107,12 @@
 </br>
 
 
-#### 뷰?
+#### ✔ 뷰?
 
 테이블은 실제로 데이터를 갖고있지만, 뷰는 실제 데이터를 갖고있지 않고  **뷰 정의(View Definition)**  만을 갖음
 </br>
 
-#### 뷰 특징
+#### ✔ 뷰 특징
 
 - 독립성 : 테이블 구조가 변경돼도 뷰를 사용하는 응용 프로그램은 변경하지 않음
 
@@ -137,7 +137,7 @@ WHERE PLAYER_NAME = '윤%';
 
 ### [제2절] 집합 연산자
 
-#### 집합 연산자? 
+#### ✔ 집합 연산자? 
 
 **여러 개의 결과 집합 간의 연산을 통해 결합**하는 방식
 </br>
@@ -159,7 +159,7 @@ WHERE PLAYER_NAME = '윤%';
 
 ### [제3절] 그룹함수
 
-#### 그룹함수?
+#### ✔ 그룹함수?
 
 ANSI/ISO SQL 표준은 데이터 분석을 위해 다음의 3가지 함수를 정의
 
@@ -326,7 +326,7 @@ ANSI/ISO SQL 표준은 데이터 분석을 위해 다음의 3가지 함수를 �
 
 ### [제4절] 윈도우 함수
 
-#### 윈도우 함수?
+#### ✔ 윈도우 함수?
 
 기존 관계형 데이터베이스는 칼럼과 칼럼 간의 연산·비교·연결, 집합에 대한 집계는 쉬웠지만 
 </br>행과 행간의 관계를 정의·비교·연산하는 것을 하나의 SQL문으로 처리하는것은 어려움.
@@ -334,7 +334,7 @@ ANSI/ISO SQL 표준은 데이터 분석을 위해 다음의 3가지 함수를 �
 </br>
 </br>
 
-#### 윈도우 함수 종류
+#### ✔ 윈도우 함수 종류
 
 - 그룹 내 `순위` 관련 함수 (RANK)
     </br>: RANK, DENSE_RANK, ROW_NUMBER
@@ -349,7 +349,7 @@ ANSI/ISO SQL 표준은 데이터 분석을 위해 다음의 3가지 함수를 �
     </br>: CUME_DIST, PERCENT_RANK, NTILE, RATIO_TO_REPORT
 </br>
 
-##### 그룹 내 순위 함수
+##### ➕ 그룹 내 순위 함수
 
 1. RANK 함수
     </br>: ORDER BY를 포함한 QUERY문에서 특정 항목에 대한 순위를 구하는 함수 
@@ -374,7 +374,7 @@ ANSI/ISO SQL 표준은 데이터 분석을 위해 다음의 3가지 함수를 �
 | 50   |    8   |       6      |       8      |
 </br>
 
-##### 그룹 내 집계 함수
+##### ➕ 그룹 내 집계 함수
 
 1. SUM 함수
     </br>: 파티션별 위도우의 합
@@ -392,7 +392,7 @@ ANSI/ISO SQL 표준은 데이터 분석을 위해 다음의 3가지 함수를 �
     </br>: 파티션별 윈도우의 카운트값 
 </br>
 
-##### 그룹 내 행순서 관련 함수
+##### ➕ 그룹 내 행순서 관련 함수
 
 1. FIRST_VALUE 함수
     </br>: 파티션 별 윈도우에서 가장 먼저 나온 값 구함 (SQL Server에서 지원 안함)
@@ -529,7 +529,7 @@ ANSI/ISO SQL 표준은 데이터 분석을 위해 다음의 3가지 함수를 �
     | MARTIN | 1981-09-28 |       0       |
 </br>
 
-##### 그룹 내 비율 함수
+##### ➕ 그룹 내 비율 함수
 
 1. RATIO_TO_REPORT
     </br>: 파티션 내 전체 칼럼 값에 대한 행별 칼럼 값의 백분율을 소수점으로 구함
@@ -627,13 +627,13 @@ ANSI/ISO SQL 표준은 데이터 분석을 위해 다음의 3가지 함수를 �
 
 ### [제5절] Top N 쿼리
 
-#### ROWNUM 슈도 칼럼
+#### ✔ ROWNUM 슈도 칼럼
 
 Pseudo Column으로서 SQL 처리 결과 집합의 각 행에 대해 임시로 부여되는 일련번호. 테이블이나 집합에서 원하는 만큼의 행만 가져오고 싶을때 WHERE 절에서 행의 개수를 제한하는 목적
 </br>Oracle의 경우 정렬이 완료된 후 데이터의 일부가 출력되는 것이 아닌, `데이터의 일부가 먼저 추출된 후 데이터에 대한 정렬 작업`이 일어나므로 주의
 </br>
 
-#### 한 건의 행만 가져오기
+#### ✔ 한 건의 행만 가져오기
 
 ```SQL
 -- 한 건의 행만 가져오기
@@ -646,7 +646,7 @@ SELECT PLAYER_NAME FROM PLAYER WHERE ROWNUM < N+1;
 ```
 </br>
 
-#### TOP 절
+#### ✔ TOP 절
 
 SQL Server는 TOP절을 사용해 결과 집합으로 출력되는 행의 수를 제한.
 </br>
@@ -675,7 +675,7 @@ ORDER BY SAL DESC;
 |  FORD | 3000 |
 </br>
 
-#### ROW LIMITING 절
+#### ✔ ROW LIMITING 절
 
 Oracle 12.1, SQL Server 2012 이상부터 ROW LIMITING으로 TOP N 쿼리를 작성할 수 있음. ORDER BY 절 다음에 기술하며 ORDER BY 절과 함께 수행됨.
 </br>
@@ -721,12 +721,12 @@ ORDER BY SAL, EMPNO OFFSET 5 ROWS; -- 상위 5개 행을 건너뜀
 
 ### [제6절] 계층형 질의와 셀프 조인
 
-#### 계층형 데이터?
+#### ✔ 계층형 데이터?
 
 동일 테이블에 계층적으로 상위와 하위 데이터가 포함된 데이터 (관리자-사원 관계, 상위조직-하위조직 관계)
 </br>
 
-#### 셀프조인
+#### ✔ 셀프조인
 동일 테이블 사이의 조인. FROM 절에 동일 테이블이 두 번 이상 나타남.
 </br>동일 테이블 사이의 조인을 수행하기 위해서는 `테이블 식별을 위해 Alias 사용 필수` 
 </br>셀프조인은 동일한 테이블이지만, 개념적으로는 두 개의 서로 다른 테이블을 사용하는 것과 동일함
@@ -785,7 +785,7 @@ SELECT MANAGER.EMPNO, MANAGER.ENAME, MANAGER.MGR
 |  7566 | JONES | 7839 |
 </br>
 
-#### 계층형 질의
+#### ✔ 계층형 질의
 
 1. Oracle 계층형 질의
     
@@ -862,7 +862,7 @@ CONNECT BY EMPNO = PRIOR MGR;
 
 ### [제7절] PIVOT 절과 UNPIVOT 절
 
-#### PIVOT 절
+#### ✔ PIVOT 절
 
 행을 열로 전환
 </br>
@@ -910,7 +910,7 @@ ORDER BY JOB;
 ```
 </br>
 
-#### UNPIVOT 절
+#### ✔ UNPIVOT 절
 
 열을 행으로 전환
 
@@ -975,13 +975,14 @@ ORDER BY 1, 2;
 
 ### [제8절] 정규 표현식 </h4>
 
-#### 정규 표현식?
+#### ✔ 정규 표현식?
 
 문자열의 규칙을 표현하는 검색 패턴으로 주로 문자열 검색과 치환에 사용됨
 </br>
 
 1. POSIX 연산자
-```BASH
+
+``TEXT
 . : 모든 문자와 일치
 | : 대체 문자를 구분
 \ : 다음 문자를 일반 문자로 취급
@@ -1012,11 +1013,116 @@ $ : 문자열의 끝
 [:blank:]   : 공백 문자
 [:space:]   : 공간 문자 (space, enter, tab)
 ```
+
+```SQL
+SELECT REGEXP_SUBSTR ('aab', 'a.b') AS C1 -- aab
+     , REGEXP_SUBSTR ('abb', 'a.b') AS C2 -- abb
+     , REGEXP_SUBSTR ('acb', 'a.b') AS C3 -- acb
+     , REGEXP_SUBSTR ('adc', 'a.b') AS C4
+  FROM DUAL;
+
+
+SELECT REGEXP_SUBSTR ('a', 'a|b') AS C1 -- a
+     , REGEXP_SUBSTR ('b', 'a|b') AS C2
+     , REGEXP_SUBSTR ('c', 'a|b') AS C3
+
+     , REGEXP_SUBSTR ('ab', 'ab|cd') AS C4 -- ab
+     , REGEXP_SUBSTR ('cd', 'ab|cd') AS C5 -- cd
+     , REGEXP_SUBSTR ('bc', 'ab|cd') AS C6
+
+     , REGEXP_SUBSTR ('aa', 'a|aa') AS C7 -- a
+     , REGEXP_SUBSTR ('aa', 'aa|a') AS C8 -- aa
+  FROM DUAL;
+
+
+SELECT REGEXP_SUBSTR ('a|b', 'a|b') AS C1 -- a
+     , REGEXP_SUBSTR ('a|b', 'a\|b') AS C2 -- a|b
+  FROM DUAL;
+
+
+SELECT REGEXP_SUBSTR ('ab'||CHR (10)||'cd', '^.', 1, 1) AS C1 -- a
+     , REGEXP_SUBSTR ('ab'||CHR (10)||'cd', '^.', 1, 2) AS C2
+
+     , REGEXP_SUBSTR ('ab'||CHR (10)||'cd', '.$', 1, 1) AS C3 -- d
+     , REGEXP_SUBSTR ('ab'||CHR (10)||'cd', '.$', 1, 2) AS C4 
+  FROM DUAL;
+
+
+SELECT REGEXP_SUBSTR ('ac', 'ab?c') AS C1 -- ac
+     , REGEXP_SUBSTR ('abc', 'ab?c') AS C2 -- abc
+     , REGEXP_SUBSTR ('abbc', 'ab?c') AS C3
+     
+     , REGEXP_SUBSTR ('ac', 'ab*c') AS C4 -- ac
+     , REGEXP_SUBSTR ('abc', 'ab*c') AS C5 -- abc
+     , REGEXP_SUBSTR ('abbc', 'ab*c') AS C6 -- abbc
+
+     , REGEXP_SUBSTR ('ac', 'ab?c') AS C4
+     , REGEXP_SUBSTR ('abc', 'ab?c') AS C5 -- abc
+     , REGEXP_SUBSTR ('abbc', 'ab?c') AS C6 -- abbc
+  FROM DUAL;
+
+
+SELECT REGEXP_SUBSTR ('ab', 'a{2}') AS C1 
+     , REGEXP_SUBSTR ('aab', 'a{2}') AS C2 -- aa
+
+     , REGEXP_SUBSTR ('aab', 'a{3,}') AS C3
+     , REGEXP_SUBSTR ('aaab', 'a{3,}') AS C4 -- aaa
+
+     , REGEXP_SUBSTR ('aaab', 'a{4,5}') AS C5
+     , REGEXP_SUBSTR ('aaaab', 'a{4,5}') AS C6 -- aaaa
+  FROM DUAL;
+
+
+SELECT REGEXP_SUBSTR ('ababc', '(ab)+c') AS C1 -- ababc
+     , REGEXP_SUBSTR ('ababc', 'ab+c') AS C2 -- abc
+     , REGEXP_SUBSTR ('abd', 'a(b|c)d') AS C3 -- abd
+     , REGEXP_SUBSTR ('abd', 'ab|cd') AS C4 -- ab
+  FROM DUAL;
+
+
+SELECT REGEXP_SUBSTR ('abxab' , '(ab|cd)x\1') AS C1 -- abxab
+     , REGEXP_SUBSTR ('cdxcd' , '(ab|cd)x\1') AS C2 -- cdxcd
+     , REGEXP_SUBSTR ('abxef' , '(ab|cd)x\1') AS C3
+
+     , REGEXP_SUBSTR ('ababab', '(.*)\1+') AS C4 -- ababab
+     , REGEXP_SUBSTR ('abcabc', '(.*)\1+') AS C5 -- abcabc
+     , REGEXP_SUBSTR ('abcabd', '(.*)\1+') AS C6
+  FROM DUAL;
+
+
+SELECT REGEXP_SUBSTR ('ac', '[ab]c') AS C1 -- ac
+     , REGEXP_SUBSTR ('bc', '[ab]c') AS C2 -- bc
+     , REGEXP_SUBSTR ('cc', '[ab]c') AS C3
+
+     , REGEXP_SUBSTR ('ac', '[^ab]c') AS C4
+     , REGEXP_SUBSTR ('bc', '[^ab]c') AS C5
+     , REGEXP_SUBSTR ('cc', '[^ab]c') AS C6 -- cc
+  FROM DUAL;
+
+
+SELECT REGEXP_SUBSTR ('1a', '[0-9][a-z]') AS C1 -- 1a
+     , REGEXP_SUBSTR ('9z', '[0-9][a-z]') AS C2 -- 9z
+     , REGEXP_SUBSTR ('aA', '[^0-9][^a-z]') AS C3 -- aA
+     , REGEXP_SUBSTR ('Aa', '[^0-9][^a-z]') AS C4
+  FROM DUAL;
+
+
+-- 한문자만 일치하면 패턴이 일치한 것으로 처리
+SELECT REGEXP_SUBSTR ('gF1,', '[[:digit:]]') AS C1 -- 1
+     , REGEXP_SUBSTR ('gF1,', '[[:alpha:]]') AS C2 -- g
+     , REGEXP_SUBSTR ('gF1,', '[[:lower:]]') AS C3 -- g
+     , REGEXP_SUBSTR ('gF1,', '[[:upper:]]') AS C4 -- F
+     , REGEXP_SUBSTR ('gF1,', '[[:alnum:]]') AS C5 -- g
+     , REGEXP_SUBSTR ('gF1,', '[[:xdigit:]]') AS C6 -- F
+     , REGEXP_SUBSTR ('gF1,', '[[:punct:]]') AS C7 -- ,
+  FROM DUAL;
+```
+
 </br>
 
-2. PERL 정규표현식 연산자
+1. PERL 정규표현식 연산자
 
-```BASH
+```TEXT
 \d : (= [[:digit:]])    숫자                       
 \D : (= [^[:digit:]])   숫자가 아닌 모든 문자
 \w : (= [[:alnum:]_])   숫자와 영문자 (underbar 포함)
@@ -1032,9 +1138,56 @@ $ : 문자열의 끝
 {,m}? : 최대 m회 일치
 {m,n}? : 최소 m회, 최대 n회 일치
 ```
+
+```SQL
+SELECT REGEXP_SUBSTR ('(650) 555-0100', '^\(\d{3}\) \d{3}-\d{4}$') AS C1 -- (650) 555-0100
+     , REGEXP_SUBSTR ('650-555-0100'  , '^\(\d{3}\) \d{3}-\d{4}$') AS C2
+     , REGEXP_SUBSTR ('b2b', '\w\d\D') AS C3 -- b2b
+     , REGEXP_SUBSTR ('b2_', '\w\d\D') AS C4 -- b2_
+     , REGEXP_SUBSTR ('b22', '\w\d\D') AS C5
+  FROM DUAL;
+
+
+SELECT REGEXP_SUBSTR ('jdoe@company.co.uk', '\w+\@\w+(\.\w+)+') AS C1 -- jdoe@company.co.uk
+     , REGEXP_SUBSTR ('jdoe@company'      , '\w+\@\w+(\.\w+)+') AS C2
+     , REGEXP_SUBSTR ('to: bill', '\w+\W\s\w+') AS C3 -- to: bill
+     , REGEXP_SUBSTR ('to bill' , '\w+\W\s\w+') AS C4
+  FROM DUAL;
+
+
+SELECT REGEXP_SUBSTR ('(a b )', '\(\w\s\w\s\)') AS C1 -- (a b )
+     , REGEXP_SUBSTR ('(a b )', '\(\w\S\w\S\)') AS C2
+     , REGEXP_SUBSTR ('(a,b.)', '\(\w\s\w\s\)') AS C3
+     , REGEXP_SUBSTR ('(a,b.)', '\(\w\S\w\S\)') AS C4 -- (a,b.)
+  FROM DUAL;
+
+
+-- PERL 방식 : 패턴을 최소로 일치시키는 비탐욕적(nongreedy) 방식으로 동작
+-- POSIX 방식 : 패턴을 최대로 일치시키는 탐욕적(greedy) 방식으로 동작
+SELECT REGEXP_SUBSTR ('aaaa', 'a??aa') AS C1 -- aa
+     , REGEXP_SUBSTR ('aaaa', 'a?aa') AS C2 -- aaa
+
+     , REGEXP_SUBSTR ('xaxbxc', '\w*?x\w') AS C3 -- xa
+     , REGEXP_SUBSTR ('xaxbxc', '\w*x\w') AS C4 -- xaxbxc
+     
+     , REGEXP_SUBSTR ('abxcxd', '\w+?x\w') AS C5 -- abxc 
+     , REGEXP_SUBSTR ('abxcxd', '\w+x\w') AS C6 -- abxcxd
+  FROM DUAL;
+
+
+SELECT REGEXP_SUBSTR ('aaaa', 'a{2}?') AS C1 -- aa
+     , REGEXP_SUBSTR ('aaaa', 'a{2}') AS C2 -- aa
+
+     , REGEXP_SUBSTR ('aaaaa', 'a{2,}?') AS C3 -- aa
+     , REGEXP_SUBSTR ('aaaaa', 'a{2,}') AS C4 -- aaaaa
+
+     , REGEXP_SUBSTR ('aaaaa', 'a{2,4}?') AS C5 -- aa
+     , REGEXP_SUBSTR ('aaaaa', 'a{2,4}') AS C6 -- aaaa
+  FROM DUAL;
+```
 </br>
 
-#### 정규 표현식 조건과 함수
+#### ✔ 정규 표현식 조건과 함수
 
 1. REGEXP_LIKE 조건
     </br>: source_char가 pattern과 일치하면 True, 아니면 False
@@ -1045,7 +1198,6 @@ $ : 문자열의 끝
     - source_char   : 검색 문자열 지정
     - pattern       : 검색 패턴 지정
     - mamtch_param  : 일치 옵션 지정 (기본값은 c)
-    - 
       - i : 대소문자 무시
       - c : 대소문자 구분
       - n : dot(.)을 개행 문자와 일치
@@ -1053,7 +1205,7 @@ $ : 문자열의 끝
       - x : 검색 패턴의 공백 문자 무시
 </br>
 
-2. REGEXP_REPLACE 함수
+1. REGEXP_REPLACE 함수
     </br>: source_char에서 일치한 pattern을 replace_string으로 변경한 문자값을 반환
     </br>
     </br>`REGEXP_REPLACE (source_char, pattern [, replace_string [, position [, occurence [, match_param]]]])`
