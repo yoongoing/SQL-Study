@@ -1,6 +1,6 @@
 # ALL ABOUT SQL
 
-## SQL 활용
+## 1. SQL 활용
 
 ### [📖 정리노트](./SQL-Intermediate)
 
