@@ -842,9 +842,8 @@ CONNECT BY MGR = PRIOR EMPNO;
 |  3 |  7900 | 7698 |      1 |
 |  2 |  7782 | 7839 |      0 |
 |  3 |  7934 | 7782 |      1 |
-</br>
 
-<img src="./src/forward1.png" alt="순방향 예시" width="900" height="600">
+<img src="./src/forward1.png" alt="순방향 예시">
 </br>
 
 ```SQL
@@ -860,9 +859,8 @@ CONNECT BY EMPNO = PRIOR MGR;
 |  2 |  7788 | 7566 |    0   |
 |  3 |  7566 | 7839 |    0   |
 |  4 |  7839 |      |    1   |
-</br>
 
-<img src="./src/backward1.png" alt="역방향 예시" width="900" height="600">
+<img src="./src/backward1.png" alt="역방향 예시">
 
 ---
 
