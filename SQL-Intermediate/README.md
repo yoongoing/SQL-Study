@@ -1,7 +1,8 @@
 ## [SQL 활용]
-</br>
 
 ### [제1절] 서브쿼리
+
+<details>
 
 #### ✔ 서브쿼리?
 
@@ -96,15 +97,15 @@
     1. SELECT 절에 서브쿼리 (**스칼라 서브쿼리**, Scalar Subquery)
         : 스칼라 서브쿼리는 **한 행, 한 칼럼만을 반환**하는 서브쿼리
         </br>`단일행 서브쿼리, 결과가 2건 이상이면 오류 반환`
-    
     </br>
+    
     2. FROM 절에 서브쿼리 사용 (**인라인 뷰**, Inline View)
        : 인라인 뷰를 사용하면 서브쿼리의 결과를 테이블처럼 사용 가능
        </br>`SELECT문을 객체로서 저장하여 테이블처럼 사용하는 View와 달리, 인라인 뷰는 쿼리 내에서 즉시 처리`
-
+    </br>
+    
     3. HAVING 절에서 서브쿼리 사용
 </br>
-
 
 #### ✔ 뷰?
 
@@ -131,10 +132,13 @@ SELECT PLAYER_NAME, POSITION, BACK_NO, TEAM_ID, TEAM_NAME
 FROM V_PLAYER_TEAM
 WHERE PLAYER_NAME = '윤%';
 ```
+</details>
 
 ---
 
 ### [제2절] 집합 연산자
+
+<details>
 
 #### ✔ 집합 연산자? 
 
@@ -153,9 +157,13 @@ WHERE PLAYER_NAME = '윤%';
 4. **EXCEPT**
 </br>차집합 연산 수행, **중복 제거**
 
+</details>
+
 ---
 
 ### [제3절] 그룹함수
+
+<details>
 
 #### ✔ 데이터분석 개요
 
@@ -321,10 +329,14 @@ ANSI/ISO SQL 표준은 데이터 분석을 위해 다음의 3가지 함수를 �
     |            |  MANAGER  |    3    |   8275 |
     |            | PRESIDENT |    1    |   5000 |
     |            |  SALESMAN |    4    |   5600 |
-    
+   
+</details>   
+
 ---
 
 ### [제4절] 윈도우 함수
+
+<details>
 
 #### ✔ 윈도우 함수?
 
@@ -623,9 +635,13 @@ ANSI/ISO SQL 표준은 데이터 분석을 위해 다음의 3가지 함수를 �
     |  JAMES |  950 |  4 |
     |  SMITH |  800 |  4 |
 
+</details>
+
 ---
 
 ### [제5절] Top N 쿼리
+
+<details>
 
 #### ✔ ROWNUM 슈도 칼럼
 
@@ -718,9 +734,13 @@ ORDER BY SAL, EMPNO OFFSET 5 ROWS; -- 상위 5개 행을 건너뜀
 |  7499 | 1600 |
 |  ...  |  ... |
 
+</details>
+
 ---
 
 ### [제6절] 계층형 질의와 셀프 조인
+
+<details>
 
 #### ✔ 계층형 데이터?
 
@@ -862,9 +882,13 @@ CONNECT BY EMPNO = PRIOR MGR;
 
 <img src="./src/backward1.png" alt="역방향 예시">
 
+</details>
+
 ---
 
 ### [제7절] PIVOT 절과 UNPIVOT 절
+
+<details>
 
 #### ✔ PIVOT 절
 
@@ -940,7 +964,7 @@ ORDER BY 1, 2;
 |   JOB   |  DEPTNO |  SAL |
 |:-------:|:-------:|:----:|
 | ANALYST | D20_SAL | 6000 |
-|  CLERK  | D10_SAL | 1900 |
+|  CLERK  | D10_SAL | 1300 |
 |  CLERK  | D20_SAL | 1900 |
 </br>
 
@@ -975,9 +999,14 @@ ORDER BY 1, 2;
 | ANALYST |     20 | 6000 |   2 |
 |  CLERK  |     10 | 1300 |   1 |
 |  CLERK  |     20 | 1900 |   2 |
+
+</details>
+
 ---
 
 ### [제8절] 정규 표현식 </h4>
+
+<details>
 
 #### ✔ 정규 표현식?
 
@@ -1361,6 +1390,8 @@ SELECT REGEXP_SUBSTR ('aaaa', 'a{2}?') AS C1 -- aa
     | A1 | A2 |
     |:--:|:--:|
     |  5 |  3 |
+
+</details>
 
 ---
 
