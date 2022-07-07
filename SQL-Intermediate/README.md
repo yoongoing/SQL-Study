@@ -171,6 +171,8 @@ ANSI/ISO SQL 표준은 데이터 분석을 위해 다음의 3가지 함수를 �
     </br>ANALYTIC FUNCTION, RANK FUNCTION
 </br>
 
+#### ✔ 그룹함수 종류
+
 1. **ROLLUP 함수**
     - ROLLUP에 지정된 Grouping Columns의 List는 Subtotal을 생성하기 위함
     - Grouping Columns의 수가 N이면, **N+1 Level**의 Subtotal 생성
@@ -630,6 +632,7 @@ ANSI/ISO SQL 표준은 데이터 분석을 위해 다음의 3가지 함수를 �
 Pseudo Column으로서 SQL 처리 결과 집합의 각 행에 대해 임시로 부여되는 일련번호. 테이블이나 집합에서 원하는 만큼의 행만 가져오고 싶을때 WHERE 절에서 행의 개수를 제한하는 목적
 </br>Oracle의 경우 정렬이 완료된 후 데이터의 일부가 출력되는 것이 아닌, `데이터의 일부가 먼저 추출된 후 데이터에 대한 정렬 작업`이 일어나므로 주의
 </br>
+</br>
 
 #### ✔ 한 건의 행만 가져오기
 
@@ -722,11 +725,14 @@ ORDER BY SAL, EMPNO OFFSET 5 ROWS; -- 상위 5개 행을 건너뜀
 #### ✔ 계층형 데이터?
 
 동일 테이블에 계층적으로 상위와 하위 데이터가 포함된 데이터 (관리자-사원 관계, 상위조직-하위조직 관계)
+</br>셀프 조인이나 계층형 질의를 통해 조회 가능
+</br>
 </br>
 
 #### ✔ 셀프조인
 
 : 동일 테이블 사이의 조인. FROM 절에 동일 테이블이 두 번 이상 나타남.
+</br>
 </br>동일 테이블 사이의 조인을 수행하기 위해서는 `테이블 식별을 위해 Alias 사용 필수` 
 </br>셀프조인은 동일한 테이블이지만, 개념적으로는 두 개의 서로 다른 테이블을 사용하는 것과 동일함
 </br>
@@ -808,7 +814,7 @@ SELECT MANAGER.EMPNO, MANAGER.ENAME, MANAGER.MGR
 
     - LEVEL : 루트 테이터는 1, 그 하위 데이터는 2. 리프(LEAF) 데이터까지 1씩 증가
     
-    - CONNECT_BY_ISLEAF : 전개 과정ㅁ에서 해당 데이터가 리프 데이터면 1, 그렇지 않으면 0
+    - CONNECT_BY_ISLEAF : 전개 과정에서 해당 데이터가 리프 데이터면 1, 그렇지 않으면 0
     
     - CONNECT_BY_ISCYCLE : 전개 과정에서 자식을 갖는데, 해당 데이터가 조상으로서 존재하면 1, 그렇지 않으면 0 (CYCLE 옵션 사용할때만 사용 가능)
 </br>
@@ -945,7 +951,7 @@ ORDER BY 1, 2;
 SELECT JOB, DEPTNO, SAL
   FROM T1
 UNPIVOT (SAL FOR DEPTNO IN (D10_SAL AS 10, D20_SAL AS 20))
-ORDER BY 1M2;
+ORDER BY 1, 2;
 ```
 |   JOB   | DEPTNO |  SAL |
 |:-------:|:------:|:----:|
@@ -978,6 +984,7 @@ ORDER BY 1, 2;
 #### ✔ 정규 표현식?
 
 문자열의 규칙을 표현하는 검색 패턴으로 주로 문자열 검색과 치환에 사용됨
+</br>
 </br>
 
 1. **POSIX 연산자**
@@ -1247,7 +1254,7 @@ SELECT REGEXP_SUBSTR ('aaaa', 'a{2}?') AS C1 -- aa
 
     - source_char   : 검색 문자열 지정
     - pattern       : 검색 패턴 지정
-    - mamtch_param  : 일치 옵션 지정 (기본값은 c)
+    - match_param  : 일치 옵션 지정 (기본값은 c)
       - i : 대소문자 무시
       - c : 대소문자 구분
       - n : dot(.)을 개행 문자와 일치
@@ -1311,7 +1318,7 @@ SELECT REGEXP_SUBSTR ('aaaa', 'a{2}?') AS C1 -- aa
 
     ```SQL
     -- 서브표현식의 순서는 좌측 괄호의 순서와 동일
-    SELECT REGEXP_SUBSTR ('1234567890', '(123)(4(56)(78))', 1, 1, 'i', 1) AS C1
+    SELECT REGEXP_SUBSTR ('1234567890', '(123)(4(56)(78))', 1, 1, 'i', 1) AS C1 -- 첫번째 위치부터 검색하여 한번만 패턴이 일치해야하고, 대소문자구분이 없는 첫번째 서브표현식을 추출.
          , REGEXP_SUBSTR ('1234567890', '(123)(4(56)(78))', 1, 1, 'i', 4) AS C2
       FROM DUAL;
     ```
@@ -1327,7 +1334,7 @@ SELECT REGEXP_SUBSTR ('aaaa', 'a{2}?') AS C1 -- aa
     </br>`REGEXP_INSTR (source_char, pattern [, position [, occurence [, return_opt [, match_param [, subexpr]]]]])`
     </br>
 
-    - return_opt : 반환 옵션 지정 (0은 시작 위치 / 1은 다음 위치 / 기본값은 0)
+    - return_opt : 반환 옵션 지정 (0은 시작 위치 값 / 1은 다음 위치 값 / 기본값은 0)
     </br>
 
     ```SQL
@@ -1341,7 +1348,7 @@ SELECT REGEXP_SUBSTR ('aaaa', 'a{2}?') AS C1 -- aa
     | 1  |  4 |  7 |
 </br>
 
-5. **REGEXP_COUNT 함수** 
+1. **REGEXP_COUNT 함수** 
     </br>: source_char에서 `일치한 pattern의 횟수를 반환`
     </br>
     </br>`REGEXP_COUNT (source_char, pattern [, position [, match_param]])`
