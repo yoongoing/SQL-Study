@@ -94,13 +94,12 @@
 5. **그 밖의 위치에서 사용하는 서브쿼리**
 
     1. SELECT 절에 서브쿼리 (**스칼라 서브쿼리**, Scalar Subquery)
-        
-        </br>: 스칼라 서브쿼리는 **한 행, 한 칼럼만을 반환**하는 서브쿼리
+        : 스칼라 서브쿼리는 **한 행, 한 칼럼만을 반환**하는 서브쿼리
         </br>`단일행 서브쿼리, 결과가 2건 이상이면 오류 반환`
-      
+    
+    </br>
     2. FROM 절에 서브쿼리 사용 (**인라인 뷰**, Inline View)
-       
-       </br>: 인라인 뷰를 사용하면 서브쿼리의 결과를 테이블처럼 사용 가능
+       : 인라인 뷰를 사용하면 서브쿼리의 결과를 테이블처럼 사용 가능
        </br>`SELECT문을 객체로서 저장하여 테이블처럼 사용하는 View와 달리, 인라인 뷰는 쿼리 내에서 즉시 처리`
 
     3. HAVING 절에서 서브쿼리 사용
@@ -153,7 +152,6 @@ WHERE PLAYER_NAME = '윤%';
   
 4. **EXCEPT**
 </br>차집합 연산 수행, **중복 제거**
-</br>
 
 ---
 
@@ -383,7 +381,7 @@ ANSI/ISO SQL 표준은 데이터 분석을 위해 다음의 3가지 함수를 �
     </br>: 파티션별 윈도우의 최댓값
     
 3. **MIN 함수**
-    </br>: 파티션별 윈도우의 최댓값
+    </br>: 파티션별 윈도우의 최솟값
     
 4. **AVG 함수**
     </br>: 파티션별 윈도우의 평균값, ROWS 윈도우를 통해 원하는 조건에 맞는 데이터에 대한 통계값 구할 수 있음
@@ -517,7 +515,7 @@ ANSI/ISO SQL 표준은 데이터 분석을 위해 다음의 3가지 함수를 �
     -- 두번째 인자 : 몇 번째 후의 행을 가져올 것인지
     -- 세번째 인자 : NVL, ISNULL 기능과 같음
     SELECT ENAME, HIREDATE, SAL
-         , LEAD (HIREDATE, 1) OVER (ORDER BY HIREDATE) AS LEAD_HIREDATE -- 입사일자가 빠른순으로 정렬하고, 바로 다음에 입사한 직원의 입사일자 출력
+         , LEAD (HIREDATE, 1, 0) OVER (ORDER BY HIREDATE) AS LEAD_HIREDATE -- 입사일자가 빠른순으로 정렬하고, 바로 다음에 입사한 직원의 입사일자 출력
       FROM EMP
      WHERE JOB = 'SALESMAN';
     ```
@@ -569,7 +567,7 @@ ANSI/ISO SQL 표준은 데이터 분석을 위해 다음의 3가지 함수를 �
     |   10   |  CLARK | 2450 | 0.50 |
     |   10   | MILLER | 1300 | 1.00 |
     |   20   |  SCOTT | 3000 | 0.00 |
-    |   20   |  FORD  | 3000 | 0.00 |
+    |   20   |  FORD  | 3000 | 0.25 |
     |   20   |  JONES | 2975 | 0.50 |
     |   20   |  ADAMS | 1100 | 0.75 |
     |   20   |  SMITH |  800 | 1.00 |
@@ -683,8 +681,8 @@ Oracle 12.1, SQL Server 2012 이상부터 ROW LIMITING으로 TOP N 쿼리를 작
 `[OFFSET offset {ROW | ROWS}]`
 
 `[FETCH {FIRST | NEXT} [{rowcount | percent PERCENT}] {ROW | ROWS} {ONLY | WITH TIES}]`
-
 </br>
+
 - OFFSET offset : 건너뛸 행의 개수 지정
 - FETCH : 반환할 행의 개수나 백분율 지정
 - ONLY : 지정된 행의 개수나 백분율 만큼 행 반환
@@ -727,7 +725,8 @@ ORDER BY SAL, EMPNO OFFSET 5 ROWS; -- 상위 5개 행을 건너뜀
 </br>
 
 #### ✔ 셀프조인
-동일 테이블 사이의 조인. FROM 절에 동일 테이블이 두 번 이상 나타남.
+
+: 동일 테이블 사이의 조인. FROM 절에 동일 테이블이 두 번 이상 나타남.
 </br>동일 테이블 사이의 조인을 수행하기 위해서는 `테이블 식별을 위해 Alias 사용 필수` 
 </br>셀프조인은 동일한 테이블이지만, 개념적으로는 두 개의 서로 다른 테이블을 사용하는 것과 동일함
 </br>
@@ -774,6 +773,7 @@ SELECT MANAGER.EMPNO, MANAGER.ENAME, MANAGER.MGR
 
 ```SQL
 -- SMITH의 부모노드의 부모노드를 조회하는 쿼리
+-- 역방향 전개
 SELECT MANAGER.EMPNO, MANAGER.ENAME, MANAGER.MGR
   FROM EMP WORKER, EMP MID, EMP MANAGER
  WHERE WORKER.ENAME = 'SMITH'
@@ -814,7 +814,7 @@ SELECT MANAGER.EMPNO, MANAGER.ENAME, MANAGER.MGR
 </br>
 
 ```SQL
-SELECT  LEVEL AS LV, LPAD (' ', (LEVEL - 1) * 2) || EMPNO AS EMPNO, MGR
+SELECT  LEVEL AS LV, LPAD (' ', (LEVEL - 1) * 2) || EMPNO AS EMPNO, MGR -- LPAD : 왼쪽부터 문자 길이 맞추기 위해 0 채우는 함수
         , CONNECT_BY_ISLEAF AS ISLEAF
   FROM EMP
 START WITH MGR IS NULL
@@ -869,7 +869,7 @@ CONNECT BY EMPNO = PRIOR MGR;
 
 ```SQL
 SELECT *
-  FROM (SELECT JOB, DEPTNO, SAL FROM EMP
+  FROM (SELECT JOB, DEPTNO, SAL FROM EMP)
  PIVOT (SUM(SAL) FOR DEPTNO IN (10, 20, 30))
 ORDER BY 1;
 ```
@@ -883,7 +883,7 @@ ORDER BY 1;
 </br>
 
 ```SQL
--- 집계함수와 IN 절에 별칭 지정. 별칭을 지정하면 결과 집합의 열 명이 변경됨
+-- 집계함수와 IN 절에 Alias 지정. 별칭을 지정하면 결과 집합의 열 명이 변경됨
 SELECT *
   FROM (SELECT JOB, DEPTNO, SAL FROM EMP)
  PIVOT (SUM(SAL) AS SAL FOR DEPTNO IN (10 AS D10, 20 AS D20, 30 AS D30))
@@ -941,10 +941,10 @@ ORDER BY 1, 2;
 </br>
 
 ```SQL
--- IN 절에 별칭을 지정하면 지정한 열의 값 변경 가능
+-- IN 절에 Alias을 지정하면 지정한 열의 값 변경 가능
 SELECT JOB, DEPTNO, SAL
   FROM T1
-UNPIVOT (SAL FOR DEPTNO IN (D10_SAL AS 10, D20_SAL AS 20)
+UNPIVOT (SAL FOR DEPTNO IN (D10_SAL AS 10, D20_SAL AS 20))
 ORDER BY 1M2;
 ```
 |   JOB   | DEPTNO |  SAL |
