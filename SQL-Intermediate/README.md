@@ -104,18 +104,19 @@
       : 인라인 뷰를 사용하면 서브쿼리의 결과를 테이블처럼 사용 가능
        </br>`SELECT문을 객체로서 저장하여 테이블처럼 사용하는 View와 달리, 인라인 뷰는 쿼리 내에서 즉시 처리`
        </br>
-      
+       </br>
+
       > Inline View vs WITH 절 </br></br>
       > 개념적으로 Inline View 와 WITH 절은 동일하다. 하지만...
       > - WITH 절 : 쿼리의 결과를 "임시테이블에 저장". 한 번 가공한 결과를 하나의 쿼리에서 여러 번 사용가능하므로, 복잡한 결과를 여러 번 사용할 때 매우 좋음. (단, 쿼리의 변형 불가능)
       > - Inline View : 사용된 횟수만큼 계속 쿼리를 수행함.
     </br>
-    
+
     3. HAVING 절에서 서브쿼리 사용 
 </br>
 
 #### ✔ 뷰?
-t
+
 테이블은 실제로 데이터를 갖고있지만, 뷰는 실제 데이터를 갖고있지 않고  **뷰 정의(View Definition)**  만을 갖음
 </br>
 
@@ -672,8 +673,9 @@ SELECT PLAYER_NAME FROM PLAYER WHERE ROWNUM < N+1;
 
 #### ✔ ROWNUM vs ROW_NUMBER()
 
-1. ROWNUM : FROM 절과 WHERE 절을 먼저 읽어 조회된 값들에 번호를 부여한 후, ORDER BY 수행 
-    </br> (= ORDER BY 하면 순서가 뒤죽박죽 섞임, 섞이는게 싫으면 서브쿼리 사용)
+1. **ROWNUM** 
+  </br>: FROM 절과 WHERE 절을 먼저 읽어 조회된 값들에 번호를 부여한 후, ORDER BY 수행 
+  </br>(= ORDER BY 하면 순서가 뒤죽박죽 섞임, 섞이는게 싫으면 서브쿼리 사용)
 
 ```SQL
 SELECT ROWNUM, PLAYER_NAME
@@ -705,7 +707,9 @@ ORDER BY PLAYER_NAME;
 |    2   |    CLARK    |
 </br>
 
-2. ROW_NUMER() : partition으로 구분된 set의 ORDER BY 순서로 값을 생성하기 때문에, 파티션별로 정렬된 상태에서 번호 부여 가능(순서가 섞일 일 없음)
+2. **ROW_NUMER()** 
+  </br>: partition으로 구분된 set의 ORDER BY 순서로 값을 생성하기 때문에, 파티션별로 정렬된 상태에서 번호 부여 가능
+  </br>(순서가 섞일 일 없음)
 
 ```SQL
 SELECT DEPTNO, ENAME, SAL, ROW_NUMBER() OVER (PARTITION BY DEPTNO ORDER BY SAL DESC) AS RN
