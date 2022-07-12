@@ -97,13 +97,20 @@
     1. SELECT 절에 서브쿼리 (**스칼라 서브쿼리**, Scalar Subquery)
         : 스칼라 서브쿼리는 **한 행, 한 칼럼만을 반환**하는 서브쿼리
         </br>`단일행 서브쿼리, 결과가 2건 이상이면 오류 반환`
+        </br>`row 건수 x 서브쿼리 cost 이므로, 사용을 지양하는것이 좋다.`
     </br>
     
     2. FROM 절에 서브쿼리 사용 (**인라인 뷰**, Inline View)
        : 인라인 뷰를 사용하면 서브쿼리의 결과를 테이블처럼 사용 가능
        </br>`SELECT문을 객체로서 저장하여 테이블처럼 사용하는 View와 달리, 인라인 뷰는 쿼리 내에서 즉시 처리`
-    </br>
+       
+       </br>
+      > Inline View VS WITH 절 </br></br>
+      > 개념적으로 Inline View 와 WITH 절은 동일하다. 하지만...
+      > - WITH 절 : 쿼리의 결과를 "임시테이블에 저장". 한 번 가공한 결과를 하나의 쿼리에서 여러 번 사용가능하므로, 복잡한 결과를 여러 번 사용할 때 매우 좋음. (단, 쿼리의 변형 불가능)
+      > - Inline View : 사용된 횟수만큼 계속 쿼리를 수행함.
     
+    </br>
     3. HAVING 절에서 서브쿼리 사용
 </br>
 
@@ -661,6 +668,59 @@ SELECT PLAYER_NAME FROM PLAYER WHERE ROWNUM < 2;
 SELECT PLAYER_NAME FROM PLAYER WHERE ROWNUM <= N;
 SELECT PLAYER_NAME FROM PLAYER WHERE ROWNUM < N+1;
 ```
+</br>
+
+#### ✔ ROWNUM vs ROW_NUMBER()
+
+1. ROWNUM : FROM 절과 WHERE 절을 먼저 읽어 조회된 값들에 번호를 부여한 후, ORDER BY 수행 
+    </br> (= ORDER BY 하면 순서가 뒤죽박죽 섞임, 섞이는게 싫으면 서브쿼리 사용)
+
+```SQL
+SELECT ROWNUM, PLAYER_NAME
+  FROM PLAYER;
+
+-- 서브쿼리를 사용하여 정렬된 데이터를 생성해두면, ROWNUM 순서에 영항을 미치지 않는다.
+SELECT ROWNUM, PLAYER_NAME
+  FROM (SELECT PLAYER_NAME
+          FROM PLAYER
+        ORDER BY PLAYER_NAME);
+```
+| ROWNUM | PLAYER_NAME |
+|:------:|:-----------:|
+|    1   |    BLAKE    |
+|    2   |    CLARK    |
+|    3   |    ALLEN    |
+</br>
+
+```SQL
+-- 이미 조회된 값들에 번호를 부여한 후, ORDER BY 절을 수행하기 때문에 ROWNUM 순서는 섞인다.
+SELECT ROWNUM, PLAYER_NAME
+  FROM PLAYER
+ORDER BY PLAYER_NAME;
+```
+| ROWNUM | PLAYER_NAME |
+|:------:|:-----------:|
+|    3   |    ALLEN    |
+|    1   |    BLAKE    |
+|    2   |    CLARK    |
+</br>
+
+2. ROW_NUMER() : partition으로 구분된 set의 ORDER BY 순서로 값을 생성하기 때문에, 파티션별로 정렬된 상태에서 번호 부여 가능(순서가 섞일 일 없음)
+
+```SQL
+SELECT DEPTNO, ENAME, SAL, ROW_NUMBER() OVER (PARTITION BY DEPTNO ORDER BY SAL DESC) AS RN
+  FROM EMP;
+```
+| DEPTNO |  ENAME |  SAL |  RN |
+|--------|:------:|:----:|:---:|
+|   10   |  KING  | 5000 |  1  |
+|   10   |  CLARK | 2450 |  2  |
+|   10   | MILLER | 1300 |  3  |
+|   20   |  SCOTT | 3000 |  1  |
+|   20   |  FORD  | 3000 |  2  |
+|   20   |  JONES | 2975 |  3  |
+|   20   |  ADAMS | 1100 |  4  |
+|   20   |  SMITH |  800 |  5  |
 </br>
 
 #### ✔ TOP 절
