@@ -1459,5 +1459,195 @@ SELECT REGEXP_SUBSTR ('aaaa', 'a{2}?') AS C1 -- aa
 
 ---
 
+## [관리 구문]
+
+### [제1절] DML
+
+<details>
+
+  #### INSERT
+
+  INSERT 문을 통해 테이블에 데이터를 삽입할 수 있음
+
+  1. 단일행 INSERT 문
+
+  `INSERT INTO 테이블명 [(칼럼1, 칼럼2, ...)] VALUES (값1, 값2, ...);`
+
+  - INTO 절의 칼럼명과 VALUES 절의 값을 **1:1 매핑하여 기술**
+  - INTO 절에 기술하지 않은 칼럼은 Default로 NULL (단, NOT NULL 혹은 Primary Key 제약이 있다면 오류 발생)
+  
+  ```SQL
+  INSERT
+    INTO PLAYER (PLAYER_ID, PLAYER_NAME, TEAM_ID, POSITION, HEIGHT, WEIGHT, BACK_NO)
+  VALUES ('2002007', '박지성', 'K07', 'MF', 178, 73, 7);
+  ```
+  | PLAYER_ID | PLAYER_NAME | TEAM_ID | E_PLAYER_NAME | NICKNAME | JOIN_YYYY | POSITION | BACK_NO | NATION | BIRTH_DATE | SOLAR | HEIGHT | WEIGHT |
+  |:---------:|:-----------:|:-------:|:-------------:|:--------:|:---------:|:--------:|:-------:|:------:|:----------:|:-----:|:------:|:------:|
+  |  2002007  |    박지성   |   K07   |               |          |           |    MF    |    7    |        |            |       |   178  |   73   |
+  </br>
+
+  ```SQL
+  INSERT
+    INTO PLAYER -- INTO 절에 칼럼명을 지정하지 않는 경우, 테이블에 정의된 칼럼 순서대로 VALUES절에 모든 값을 기술해야함
+  VALUES ('2002010', '이청용', 'K07', '', 'BlueDragon', '2002', 'MF', '17', NULL, NULL, '1', 180, 69);
+  ```
+  | PLAYER_ID | PLAYER_NAME | TEAM_ID | E_PLAYER_NAME |  NICKNAME  | JOIN_YYYY | POSITION | BACK_NO | NATION | BIRTH_DATE | SOLAR | HEIGHT | WEIGHT |
+  |:---------:|:-----------:|:-------:|:-------------:|:----------:|:---------:|:--------:|:-------:|:------:|:----------:|:-----:|:------:|:------:|
+  |  2002007  |    박지성   |   K07   |               |            |           |    MF    |    7    |        |            |       |   178  |   73   |
+  |  2002010  |    이청용   |   K07   |               | BlueDragon |    2002   |    MF    |    17   |        |            |   1   |   180  |   69   |
+  </br>
+
+
+  2. 서브 쿼리를 이요한 다중 행 INSERT 문
+
+  ```BASH
+  INSERT INTO 테이블명[(칼럼1, 칼럼2, ...)] 
+  서브쿼리;
+  ```
+
+  ```SQL
+  INSERT
+    INTO TEAM (TEAM_ID, REGION_NAME, TEAM_NAME, ORIG_YYYY, STADIUM_ID)
+  SELECT REPLACE(TEAM_ID, 'K', 'A') AS TEAM_ID
+       , REGION_NAME, REGION_NAME || '올스타' AS TEAM_NAME
+       , 2019 AS ORIG_YYYY, STADIUM_ID
+    FROM TEAM
+   WHERE REGION_NAME IN ('성남', '인천'); 
+  ```
+  </br>
+
+  #### UPDATE
+
+  데이터를 수정해야하는 상황 발생 시, UPDATE 문을 통해 데이터를 수정
+
+  ```BASH
+  UPDATE 테이블명
+    SET 수정할 칼럼명1 = 수정될 새로운 값1
+     [, 수정할 칼럼명2 = 수정될 새로운 값2]
+     [, ...]
+  [WHERE 수정 대상 식별 조건식]
+  ```
+
+  - SET 절에는 수정할 칼럼명과 해당 칼럼에 수정될 값 기술
+  - WHERE 절에는 수정대상이 될 행을 식별할 수 있도록 조건식 기술. (단, WHERE 절 사용안할 시 테이블의 전체 데이터가 수정됨)
+
+  ```SQL
+  UPDATE PLAYER
+    SET BACKNO = 99;
+  -- WHERE 절이 없으므로, 일괄적으로 99로 수정
+
+
+  UPDATE PLAYER
+    SET POSITION = 'MF'
+  WHERE POSITION IS NULL;
+
+
+  -- 단일행 서브쿼리
+  UPDATE TEAM A
+    SET A.ADDRESS = (SELECT X.ADDRESS
+                       FROM STATIUM X
+                      WHERE X.HOMETEAM_ID = A.TEAM_ID)
+  WHERE A.ORIG_YYYY > 2000;
+
+
+  -- 다중 칼럼 서브쿼리
+  UPDATE STADIUM A
+    SET (A.DDD, A.TEL) = (SELECT X.DDD, X.TEL
+                            FROM TEAM X
+                           WHERE X.TEAM_ID = A.HOMETEAM_ID);
+  WHERE EXISTS (SELECT 1 -- 다중행 서브쿼리, 연관 서브쿼리
+                  FROM TEAM X
+                WHERE X.TEAM_ID = A.HOMETEAM_ID);
+  ``` 
+  </br>
+
+  #### DELETE
+
+  테이블에 저장된 데이터가 더 이상 필요 없게 됐을 경우, DELETE 문을 통해 데이터 삭제 수행
+
+  ```BASH
+  DELETE [FROM] 테이블명
+  [WHERE 삭제 대상 식별 조건식];
+  ```
+
+  - WHERE 절 사용 안할 시 테이블의 전체 데이터가 삭제됨.
+
+  ```SQL
+  -- 전체 데이터 삭제
+  DELETE FROM PLAYER;
+
+
+  -- 다중행 서브쿼리
+  DELETE PLAYER
+  WHERE TEAM_ID IN (SELECT TEAM_ID
+                      FROM PLAYER
+                    GROUP BY TEAM_ID
+                      HAVING COUNT(*) <= 10);
+  ```
+  </br>
+
+  #### MERGE
+
+  새로운 행을 입력하거나, 기존 행을 수정하는 작업을 한 번에 할 수 있음  
+
+  ```SQL
+  MERGE
+   INTO 타겟 테이블명
+  USING 소스 테이블명
+     ON (조인 조건식)
+   WHEN MATCHED THEN -- 조인에 성공한 행들
+    UPDATE
+      SET 수정할 칼럼명1 = 수정될 새로운 값1
+        [,수정할 칼럼명2 = 수정될 새로운 값2, ...]
+   WHEN NOT MATCHED THEN -- 조인에 실패한 행들
+    INSERT [(칼럼1, 칼럼2, ...)]
+    VALUES (값1, 값2, ...);
+  ```
+
+  ```SQL
+  MERGE
+    INTO TEAM T
+   USING TEAM_TMP S
+      ON (T.TEAM_ID = S.TEAM_ID)
+    WHEN MATCHED THEN
+      UPDATE
+        SET T.REGION_NAME = S.REGION_NAME
+          , T.TEAM_NAME = S.TEAM_NAME
+          , T.DDD = S.DDD
+          , T.TEL = S.TEL
+    WHEN NOT MATCHED THEN
+      INSERT (T.TEAM_ID, T.REGION_NAME, T.TEAM_NAME, T.STADIUM_ID, T.DDD, T.TEL)
+      VALUES (S.TEAM_ID, S.REGION_NAME, S.TEAM_NAME, S.STADIUM_ID, S.DDD, S.TEL);
+
+
+  -- USING 절에 서브쿼리 사용 예시
+  MERGE
+    INTO TEAM T
+   USING (SELECT * FROM TEAM_TMP WHERE REGION_NAME IN('성남', '부산', '대구', '전주')) S
+      ON (T.TEAM_ID = S.TEAM_ID)
+    WHEN MATCHED THEN
+      UPDATE
+        SET T.REGION_NAME = S.REGION_NAME
+          , T.TEAM_NAME = S.TEAM_NAME
+          , T.DDD = S.DDD
+          , T.TEL = S.TEL
+    WHEN NOT MATCHED THEN
+      INSERT (T.TEAM_ID, T.REGION_NAME, T.TEAM_NAME, T.STADIUM_ID, T.DDD, T.TEL)
+      VALUES (S.TEAM_ID, S.REGION_NAME, S.TEAM_NAME, S.STADIUM_ID, S.DDD, S.TEL);
+  ```
+  </br>
+
+  #### DDL VS DML?
+  
+  ```TEXT
+  - DDL : 데이터 구조의 변경이 DDL 명령어 수행 완료후 즉시 반영
+  
+  - DML : 데이터 변경사항을 테이블에 영구적으로 변경하기 위해 COMMIT 필요
+    (SQL Server는 AUTO COMMIT으로 즉시 반영됨)
+  ```
+
+</details>
+
+
 ### Reference
 - SQL 전문가 가이드
