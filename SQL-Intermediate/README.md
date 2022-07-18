@@ -1469,13 +1469,16 @@ SELECT REGEXP_SUBSTR ('aaaa', 'a{2}?') AS C1 -- aa
 
   INSERT 문을 통해 테이블에 데이터를 삽입할 수 있음
 
-  1. 단일행 INSERT 문
+  1. **단일행 INSERT 문**
 
-  `INSERT INTO 테이블명 [(칼럼1, 칼럼2, ...)] VALUES (값1, 값2, ...);`
+  ```SQL
+  INSERT INTO 테이블명 [(칼럼1, 칼럼2, ...)] VALUES (값1, 값2, ...);
+  ```
 
   - INTO 절의 칼럼명과 VALUES 절의 값을 **1:1 매핑하여 기술**
   - INTO 절에 기술하지 않은 칼럼은 Default로 NULL (단, NOT NULL 혹은 Primary Key 제약이 있다면 오류 발생)
-  
+  </br>
+
   ```SQL
   INSERT
     INTO PLAYER (PLAYER_ID, PLAYER_NAME, TEAM_ID, POSITION, HEIGHT, WEIGHT, BACK_NO)
@@ -1498,9 +1501,9 @@ SELECT REGEXP_SUBSTR ('aaaa', 'a{2}?') AS C1 -- aa
   </br>
 
 
-  2. 서브 쿼리를 이요한 다중 행 INSERT 문
+  2. **서브 쿼리를 이요한 다중 행 INSERT 문**
 
-  ```BASH
+  ```SQL
   INSERT INTO 테이블명[(칼럼1, 칼럼2, ...)] 
   서브쿼리;
   ```
@@ -1516,11 +1519,11 @@ SELECT REGEXP_SUBSTR ('aaaa', 'a{2}?') AS C1 -- aa
   ```
   </br>
 
-  #### UPDATE
+  #### ✔ UPDATE
 
   데이터를 수정해야하는 상황 발생 시, UPDATE 문을 통해 데이터를 수정
 
-  ```BASH
+  ```SQL
   UPDATE 테이블명
     SET 수정할 칼럼명1 = 수정될 새로운 값1
      [, 수정할 칼럼명2 = 수정될 새로운 값2]
@@ -1530,6 +1533,7 @@ SELECT REGEXP_SUBSTR ('aaaa', 'a{2}?') AS C1 -- aa
 
   - SET 절에는 수정할 칼럼명과 해당 칼럼에 수정될 값 기술
   - WHERE 절에는 수정대상이 될 행을 식별할 수 있도록 조건식 기술. (단, WHERE 절 사용안할 시 테이블의 전체 데이터가 수정됨)
+  </br>
 
   ```SQL
   UPDATE PLAYER
@@ -1550,9 +1554,9 @@ SELECT REGEXP_SUBSTR ('aaaa', 'a{2}?') AS C1 -- aa
   WHERE A.ORIG_YYYY > 2000;
 
 
-  -- 다중 칼럼 서브쿼리
+  -- 다중 서브쿼리
   UPDATE STADIUM A
-    SET (A.DDD, A.TEL) = (SELECT X.DDD, X.TEL
+    SET (A.DDD, A.TEL) = (SELECT X.DDD, X.TEL -- 다중 칼럼 서브쿼리
                             FROM TEAM X
                            WHERE X.TEAM_ID = A.HOMETEAM_ID);
   WHERE EXISTS (SELECT 1 -- 다중행 서브쿼리, 연관 서브쿼리
@@ -1561,16 +1565,17 @@ SELECT REGEXP_SUBSTR ('aaaa', 'a{2}?') AS C1 -- aa
   ``` 
   </br>
 
-  #### DELETE
+  #### ✔ DELETE
 
   테이블에 저장된 데이터가 더 이상 필요 없게 됐을 경우, DELETE 문을 통해 데이터 삭제 수행
 
-  ```BASH
+  ```SQL
   DELETE [FROM] 테이블명
   [WHERE 삭제 대상 식별 조건식];
   ```
 
   - WHERE 절 사용 안할 시 테이블의 전체 데이터가 삭제됨.
+  </br>
 
   ```SQL
   -- 전체 데이터 삭제
@@ -1586,7 +1591,7 @@ SELECT REGEXP_SUBSTR ('aaaa', 'a{2}?') AS C1 -- aa
   ```
   </br>
 
-  #### MERGE
+  #### ✔ MERGE
 
   새로운 행을 입력하거나, 기존 행을 수정하는 작업을 한 번에 할 수 있음  
 
@@ -1637,7 +1642,7 @@ SELECT REGEXP_SUBSTR ('aaaa', 'a{2}?') AS C1 -- aa
   ```
   </br>
 
-  #### DDL VS DML?
+  #### ✔ DDL VS DML?
   
   ```TEXT
   - DDL : 데이터 구조의 변경이 DDL 명령어 수행 완료후 즉시 반영
@@ -1648,6 +1653,7 @@ SELECT REGEXP_SUBSTR ('aaaa', 'a{2}?') AS C1 -- aa
 
 </details>
 
+---
 
 ### Reference
 - SQL 전문가 가이드
