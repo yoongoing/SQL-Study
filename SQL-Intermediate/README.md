@@ -1465,7 +1465,7 @@ SELECT REGEXP_SUBSTR ('aaaa', 'a{2}?') AS C1 -- aa
 
 <details>
 
-  #### INSERT
+  #### ✔ INSERT
 
   INSERT 문을 통해 테이블에 데이터를 삽입할 수 있음
 
