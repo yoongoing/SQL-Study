@@ -1464,6 +1464,12 @@ SELECT REGEXP_SUBSTR ('aaaa', 'a{2}?') AS C1 -- aa
 ### [제1절] DML
 
 <details>
+  
+  #### ✔ DML (Data Manipulation Language)?
+  
+  : 실제 테이블에 저장된 데이터를 조작할 수 있는 질의문을 말한다.
+
+  > INSERT, UPDATE, DELETE, MERGE
 
   #### ✔ INSERT
 
@@ -1650,6 +1656,166 @@ SELECT REGEXP_SUBSTR ('aaaa', 'a{2}?') AS C1 -- aa
   - DML : 데이터 변경사항을 테이블에 영구적으로 변경하기 위해 COMMIT 필요
     (SQL Server는 AUTO COMMIT으로 즉시 반영됨)
   ```
+
+### [제2절] TCL
+
+: 트랜잭션을 제어하는 명령어를 TCL로 분류한다.
+
+> COMMIT, ROLLBACK, SAVEPOINT
+
+#### ✔ 트랜잭션?
+
+- 데이터베이스의 논리적 연산단위.
+- 분할할 수 없는 최소의 단위이므로 `전부 적용하거나 전부 취소한다.`
+
+#### ✔ 트랜잭션 특징
+
+1. 원자성 (`A`tomicity)
+
+: 트랜잭션에서 정의된 연산들은 모두 성공적으로 실행되거나 전혀 실행되지 않은 상태로 남아 있어야함 (all or nothing)
+
+2. 일관성 (`C`onsistency)
+
+: 트랜잭션이 실행되기 전에 데이터베이스의 내용에 잘못이 없다면, 실행 후에도 데이터베이스의 내용에 잘못이 있으면 안 됨
+
+3. 고립성 (`I`solation)
+
+: 트랜잭션이 실행되는 도중에 다른 트랜잭션의 영향을 받아 잘못된 결과를 만들면 안됨
+
+4. 지속성 (`D`urability)
+
+: 트랜잭션이 성공적으로 수행된다면, 갱신된 데이터베이스의 내용은 영구적으로 저장되어야 함
+
+#### ✔ COMMIT
+
+: INSERT, UPDATE, DELETE 한 데이터에 대해 전혀 문제가 없다고 판단됐을 경우, COMMIT 명령어를 통해 트랜잭션 완료 가능.
+
+```TEXT
+[COMMIT 이나 ROLLBACK 이전의 데이터 상태]
+
+- 데이터의 변경을 취소해 이전 상태로 복구 가능
+- 현재 사용자는 SELECT 문장으로 결과 확인 가능
+- 다른 사용자는 현재 사용자가 수행한 명령의 결과를 볼 수 없음
+- 변경된 행은 잠금(LOCK)이 설정돼서 다른 사용자가 변경할 수 없음
+
+
+[COMMIT 이나 ROLLBACK 이후의 데이터 상태]
+
+- 데이터에 대한 변경 사항이 데이터베이스에 반영
+- 이전 데이터는 영원히 잃어버림
+- 모든 사용자는 결과를 볼 수 있음
+- 관련된 행에 대한 잠금(LOCK)이 풀리고, 다른 사용자들이 행 조작 가능
+```
+
+```SQL
+/*
+ORACLE VER.
+*/
+INSERT
+  INTO PLAYER (PLAYER_ID, TEAM_ID, PLAYER_NAME, POSITION, HEIGHT, WEIGHT, BACK_NO)
+VALUES ('19970925', 'K02', '이운재', 'GK', 182, 82, 1);
+-- 1개의 행이 만들어졌습니다.
+
+COMMIT;
+-- 커밋이 완료되었습니다.
+
+UPDATE PLAYER SET HEIGHT = 100;
+-- 100 행이 갱신됐습니다.
+
+COMMIT;
+-- 커밋이 완료되었습니다.
+
+DELETE FROM PLAYER;
+-- 481 행이 삭제됐습니다.
+
+COMMIT;
+-- 커밋이 완료됐습니다.
+
+/*
+SQL DEVELOPER VER.
+- 기본적으로 AUTO COMMIT 모드. 
+- 성공시 COMMIT, 실패시 ROLLBACK
+*/
+INSERT
+  INTO PLAYER (PLAYER_ID, TEAM_ID, PLAYER_NAME, POSITION, HEIGHT, WEIGHT, BACK_NO)
+VALUES ('19970925', 'K02', '이운재', 'GK', 182, 82, 1);
+-- 1개의 행이 영향을 받음
+
+UPDATE PLAYER SET HEIGHT = 100;
+-- 481개 행이 영향을 받음
+
+DELETE FROM PLAYER; -- AUTO COMMIT
+-- 481개 행이 영향을 받음
+```
+
+
+#### ✔ ROLLBACK
+
+: INSERT, UPDATE, DELETE 한 데이터에 대해 `COMMIT 이전`에는 변경 사항 취소 가능
+
+```SQL
+/*
+ORACLE VER.
+*/
+INSERT
+  INTO PLAYER (PLAYER_ID, TEAM_ID, PLAYER_NAME, POSITION, HEIGHT, WEIGHT, BACK_NO)
+VALUES ('19970925', 'K02', '이운재', 'GK', 182, 82, 1);
+-- 1개의 행이 만들어졌습니다.
+ROLLBACK;
+-- 롤백이 완료되었습니다.
+
+
+UPDATE PLAYER SET HEIGHT = 100;
+-- 100 행이 갱신됐습니다.
+ROLLBACK;
+-- 롤백이 완료되었습니다.
+
+
+DELETE FROM PLAYER;
+-- 481 행이 삭제됐습니다.
+ROLLBACK;
+-- 커밋이 완료됐습니다.
+
+
+
+/*
+SQL DEVELOPER VER.
+- 기본적으로 AUTO COMMIT 모드이므로, ROLLBACK을 수행하기 위해는 명시적으로 트랜잭션 선언해야함
+*/
+BEGIN TRAN
+
+INSERT
+  INTO PLAYER (PLAYER_ID, TEAM_ID, PLAYER_NAME, POSITION, HEIGHT, WEIGHT, BACK_NO)
+VALUES ('19970925', 'K02', '이운재', 'GK', 182, 82, 1);
+-- 1개의 행이 영향을 받음
+
+ROLLBACK;
+-- 명령이 완료되었습니다.
+```
+
+#### ✔ SAVEPOINT
+
+: 저장점을 정의하면 ROLLBACK 할 때 현 시점 ~ SAVEPOINT 까지 트랜잭션의 일부만 롤백 가능
+
+```SQL
+/*
+ORACLE VER.
+*/
+SAVEPOINT SVPT1;
+ROLLBACK TO SVPT1;
+
+
+/*
+SQL SERVER VER.
+*/
+SAVE TRANSACTION SVTR1;
+ROLLBACK TRANSACTION SVTR1;
+```
+
+<img src='./src/rollback.png', alt='rollback 원리(oracle 기준)'>
+
+
+
 
 </details>
 
