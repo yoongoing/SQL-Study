@@ -17,10 +17,11 @@
  
 ## 2. 관리 구문
 
-### [📖 정리노트](./SQL-Intermediate)
+### [📖 정리노트](./Management-Statement)
 
 #### 목차
 
 - 제1절 DML
 - 제2절 TCL
 - 제3절 DDL
+- 제4절 DCL
