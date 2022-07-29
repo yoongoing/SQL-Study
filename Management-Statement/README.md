@@ -210,6 +210,7 @@
 : TCL문을 사용하면 데이터베이스의 논리적 연산 단위인 트랜잭션을 제어할 수 있다.
 
 > COMMIT, ROLLBACK, SAVEPOINT
+</br>
 
 #### ✔ 트랜잭션?
 
@@ -219,19 +220,19 @@
 
 #### ✔ 트랜잭션 특징
 
-1. 원자성 (`A`tomicity)
+1. **원자성** (`A`tomicity)
 
 : 트랜잭션에서 정의된 연산들은 모두 성공적으로 실행되거나 전혀 실행되지 않은 상태로 남아 있어야함 (all or nothing)
 
-2. 일관성 (`C`onsistency)
+2. **일관성** (`C`onsistency)
 
 : 트랜잭션이 실행되기 전에 데이터베이스의 내용에 잘못이 없다면, 실행 후에도 데이터베이스의 내용에 잘못이 있으면 안 됨
 
-3. 고립성 (`I`solation)
+3. **고립성** (`I`solation)
 
 : 트랜잭션이 실행되는 도중에 다른 트랜잭션의 영향을 받아 잘못된 결과를 만들면 안됨
 
-4. 지속성 (`D`urability)
+4. **지속성** (`D`urability)
 
 : 트랜잭션이 성공적으로 수행된다면, 갱신된 데이터베이스의 내용은 영구적으로 저장되어야 함
  </br>
@@ -359,7 +360,7 @@ SAVE TRANSACTION SVTR1;
 ROLLBACK TRANSACTION SVTR1;
 ```
 
-<img src='./src/rollback.png', alt='rollback 원리(oracle 기준)'>
+<img src='./src/rollback.PNG', alt='rollback 원리(oracle 기준)'>
 
 </details>
 
@@ -374,6 +375,7 @@ ROLLBACK TRANSACTION SVTR1;
 : DDL을 사용하면 테이블을 포함한 데이터베이스 객체의 구조를 정의할 수 있다. 
 
 > CREATE TABLE, ALTER TABLE, DROP TABLE
+ </br>
 
 #### ✔ CREATE
 
@@ -396,28 +398,36 @@ SELECT * INTO TEAM_TEMP FROM TEAM;
 - 테이블명은 객체를 의미할 수 있는 적절한 이름 사용 + 중복 불가능
 - 한 테이블 내에서는 칼럼명 중복 불가능 (다른 테이블의 칼럼 이름과는 같을 수 있음, 대체로 기본키와 외래키 관계)
 - A-Z, a-z, 0-9, _, $, # 문자만 허용
+ </br>
 
 1. **제약조건?**
 
 : 사용자가 원하는 조건의 데이터만 유지하기 위해 테이블의 특정 칼럼에 설정하는 제약
 </br>`데이터의 무결성을 유지하기 위함`
 </br>
+ </br>
 
 2. **제약조건 종류**
 
-   1. PRIMARY KEY (기본키) : 테이블에 저장된 행 데이터를 고유하게 식별하기 위한 기본키 정의
+  1. **PRIMARY KEY (기본키)** : 테이블에 저장된 행 데이터를 고유하게 식별하기 위한 기본키 정의
+
     > 기본키 제약 = NOT NULL & UNIQUE
+  </br>
 
-   2. UNIQUE (고유키) : 테이블에 저장된 행 데이터를 고유하게 식별하기 위한 고유키 정의. *NULL은 고유키 제약 대상 아님. NULL 가능*
+  2. **UNIQUE (고유키)** : 테이블에 저장된 행 데이터를 고유하게 식별하기 위한 고유키 정의. *NULL은 고유키 제약 대상 아님. NULL 가능*
+  </br>
+  
+  3. **NOT NULL** : NULL 값 입력 금지.
 
-   3. NOT NULL : NULL 값 입력 금지.
     > NULL의 의미 = '아직 정의되지 않은 값' 혹은 '아직 데이터가 입력되지 않은 경우로 공백, 숫자와는 전혀 다른 값이다.
+  </br>
 
-   4. CHECK : 입력할 수 있는 값의 범위 제한. TRUE or FALSE로 평가가능한 논리식 지정
+  4. **CHECK** : 입력할 수 있는 값의 범위 제한. TRUE or FALSE로 평가가능한 논리식 지정
+  </br>
 
-   5. FOREIGN KEY (외래키) : 관계형 데이터베이스에서 테이블 간의 관계를 정의하기 위해 기본키를 다른 테이블의 외래키로 복사하는 경우 생성됨. 
+  5. **FOREIGN KEY (외래키)** : 관계형 데이터베이스에서 테이블 간의 관계를 정의하기 위해 기본키를 다른 테이블의 외래키로 복사하는 경우 생성됨. 
     > 외래키 지정시, 참조 무결성 제약 옵션 선택 가능
-</br>
+  </br>
 
 3. **생성된 테이블 구조 확인**
 
@@ -436,7 +446,8 @@ go
 
 : 칼럼을 추가/삭제하거나 제약조건을 추가/삭제하는 작업
 
-  1. ADD COLUMN
+  1. **ADD COLUMN**
+
   : 기존 테이블에 필요한 칼럼을 추가하는 명령어
   
   ```SQL
@@ -457,7 +468,8 @@ go
   </br>
 
 
-  2. DROP COLUMN
+  2. **DROP COLUMN**
+
   : 기존 테이블에 필요없는 칼럼을 삭제. 한 번 삭제된 칼럼은 복구할 수 없음
   
   ```SQL
@@ -471,7 +483,8 @@ go
   ```
   </br>
 
-   3. MODIFY COLUMN
+   3. **MODIFY COLUMN**
+
   : 테이블에 존재하는 칼럼에 대해 ALTER TABLE 명령을 이용해 칼럼의 데이터 유형, 디폴트 값, NOT NULL 제약조건에 대한 변경을 포함. (테이블의 칼럼 정의를 변경하는 명령어)
   
   ```SQL
@@ -488,7 +501,8 @@ go
   ALTER TABLE TEAM_TEMP ADD CONTRANT DF_ORIG_YYYY DEFAULT '20020129' FOR ORIG_YYYY;
   ```
   
-  4. RENAME COLUMN
+  4. **RENAME COLUMN**
+
   : 칼럼명을 어떤 이유로 불가피하게 변경해야하는 경우 (일부 DBMS에서만 지원)
   
   ```SQL
@@ -501,7 +515,8 @@ go
   sp_rename 'dbo.PLAYER.PLAYER_ID', 'TEMP_ID', 'COLUMN';
   ```
 
-  5. DROP CONSTRAINT
+  5. **DROP CONSTRAINT**
+
   : 테이블 생성 시 부여했던 제약조건을 삭제하는 명령어
   
   ```SQL
@@ -512,7 +527,8 @@ go
   ALTER TABLE PLAYER DROP CONSTRAINT PLAYER_FK;
   ```
 
-  6. ADD CONSTRAINT
+  6. **ADD CONSTRAINT**
+  
   : 테이블 생성 이후에 필요에 의해 제약조건 추가하는 명령어
   `참조 제약조건 추가시, 참조 무결성 옵션에 따라 실수에 의한 테이블 삭제나 데이터 삭제를 방지할 수 있음`
 
@@ -541,7 +557,7 @@ sp_rename '기존테이블명', '새로운테이블명';
 
 sp_rename 'dbo.team','TEAM_BACKUO';
 ```
- </br>
+</br>
 
 #### ✔ DROP
 
@@ -553,9 +569,11 @@ DROP TABLE 테이블명 [CASCADE CONTRAINT]; -- CASCADE CONTRAINT 옵션 : 해�
 
 DROP TABLE PLAYER;
 ```
- </br>
+</br>
 
 #### ✔ TRUNCATE
+
+: 테이블이 삭제되는것은 아니지만, 해당 테이블에 들어있던 모든 행 제거 및 공간을 재 사용하도록 하는 명령어
 
 ```SQL
 -- ORACLE, SQL SERVER 문법 동일
@@ -563,7 +581,7 @@ TRUNCATE TABLE 테이블명;
 
 TRUNCATE TABLE PLAYER;
 ```
- </br>
+</br>
 
 #### ✔ DELETE vs TRUNCATE vs DROP
 
@@ -586,6 +604,7 @@ TRUNCATE TABLE PLAYER;
 #### ✔ DCL (Data Definition Language)?
 
 : 유저를 생성하고 권한을 제어할 수 있는 명령어
+</br>
 
 #### ✔ 유저와 권한
 
@@ -594,7 +613,7 @@ TRUNCATE TABLE PLAYER;
 - SCOTT : Oracle 테스트용 샘플 계정 (Default 패스워드 : TIGER)
 - SYS : 백업 및 복구 등 데이터베이스 상의 모든 관리 기능을 수행할 수 있는 최상위 관리자 계정
 - SYSTEM : 백업, 복구 등 일부 관리 기능을 제외한 모든 시스템 권한을 부여받은 DBA 계정
- </br>
+</br>
 
 #### ✔ 유저 생성과 시스템 부여
 
@@ -672,9 +691,7 @@ UPDATE SQLD.MENU
 데이터베이스 관리자가 유저가 생성될 때마다 각각의 권한들을 유저에게 부여하는 작업을 수행해야하는데, 하나하나씩 부여하다보면 권한을 빠뜨릴 수도 있으므로
 유저별로 어떤 권한이 부여됐는지를 관리해야 한다.
 </br> 또한 관리해야 할 유저가 점점 늘어나고 자주 변경되는 상황에서는 매우 번거롭다.
-</br> 따라서 
-
-`ROLE을 생성하고 ROLE에 각종 권한을 부여한 후 ROLE을 다른 ROLE 혹은 유저에게 부여하여 관리한다`
+</br> 따라서... `ROLE을 생성하고 ROLE에 각종 권한을 부여한 후 ROLE을 다른 ROLE 혹은 유저에게 부여하여 관리한다`
 
 ```SQL
 CONN SYSTEM/MANAGER;
