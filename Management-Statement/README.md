@@ -196,6 +196,8 @@
     (SQL Server는 AUTO COMMIT으로 즉시 반영됨)
   ```
 
+</details>
+
 ### [제2절] TCL
 
 <details>
@@ -350,6 +352,8 @@ ROLLBACK TRANSACTION SVTR1;
 ```
 
 <img src='./src/rollback.png', alt='rollback 원리(oracle 기준)'>
+
+</details>
 
 ### [제3절] DDL
 
