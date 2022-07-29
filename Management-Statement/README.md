@@ -6,7 +6,7 @@
   
   #### ✔ DML (Data Manipulation Language)?
   
-  : 실제 테이블에 저장된 데이터를 조작할 수 있는 질의문을 말한다.
+  : DML을 사용하면 테이블에 데이터를  입력, 수정, 삭제할 수 있다.
 
   > INSERT, UPDATE, DELETE, MERGE
 
@@ -198,7 +198,9 @@
 
 ### [제2절] TCL
 
-: 트랜잭션을 제어하는 명령어를 TCL로 분류한다.
+<details>
+
+: TCL문을 사용하면 데이터베이스의 논리적 연산 단위인 트랜잭션을 제어할 숭 ㅣㅆ다.
 
 > COMMIT, ROLLBACK, SAVEPOINT
 
@@ -350,6 +352,10 @@ ROLLBACK TRANSACTION SVTR1;
 <img src='./src/rollback.png', alt='rollback 원리(oracle 기준)'>
 
 ### [제3절] DDL
+
+<details>
+
+: DDL을 사용하면 테이블을 포함한 데이터베이스 객체의 구조를 정의할 수 있다. 
 
 #### ✔ CREATE
 
@@ -546,7 +552,11 @@ TRUNCATE TABLE PLAYER;
 - DROP : 테이블 메모리, 데이터 모두 삭제하며, ROLLBACK 불가
 ```
 
+</details>
+
 ### [제4절] DCL
+
+<details>
 
 유저를 생성하고 권한을 제어할 수 있는 명령어
 
