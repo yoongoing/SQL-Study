@@ -546,6 +546,117 @@ TRUNCATE TABLE PLAYER;
 - DROP : 테이블 메모리, 데이터 모두 삭제하며, ROLLBACK 불가
 ```
 
+### [제4절] DCL
+
+유저를 생성하고 권한을 제어할 수 있는 명령어
+
+#### ✔ 유저와 권한
+
+대부분의 데이터베이스는 데이터 보호와 보안을 위해서 유저와권한을 관리하고 있다. Oracle을 설치하면 기본적으로 제공되는 유저는 다음과 같다.
+
+- SCOTT : Oracle 테스트용 샘플 계정 (Default 패스워드 : TIGER)
+- SYS : 백업 및 복구 등 데이터베이스 상의 모든 관리 기능을 수행할 수 있는 최상위 관리자 계정
+- SYSTEM : 백업, 복구 등 일부 관리 기능을 제외한 모든 시스템 권한을 부여받은 DBA 계정
+
+#### ✔ 유저 생성과 시스템 부여
+
+사용자가 실행하는 모든 DDL 문장은 그에 해당하는 적절한 구너한이 있어야만 실행할 수 있다. 그것을 `시스템권한` 이라고 하며, `ROLE`을 통해 권한을 부여한다.
+
+```SQL
+/* CREATE USER 권한 */
+CREATE USER SQLD IDENTIFIED BY DB2019;
+-- 권한이 불충분합니다.
+
+CONN SYSTEM/MANAGER;
+GRANT CREATE USER TO SCOTT; -- SCOTT 계정에 계정 생성 권한 부여
+-- 권한이 부여됐습니다.
+
+CREATE USER SQLD INDENTIFIED BY DB2019;
+-- 사용자가 생성됐습니다.
+
+
+/* CREATE SESSION (로그인) 권한 */
+CONN SQLD/DB2019; -- SQLD 유저가 생성됐지만 아무런 권한이 없기 때문에 로그인 오류 발생
+--  user SQLD lacks CREATE SESSION privilege
+
+CONN SYSTEM/MANAGER;
+GRANT CREATE SESSION TO SQLD; -- SQLD 계정에 로그인 권한 부여
+-- 권한이 부여됐습니다.
+
+CONN SQLD/DB2019;
+-- 연결됐습니다.
+
+
+/* CREATE TABLE 권한 */
+CREATE TABLE MENU (MENU_SEQ NUMBER NOT NULL, TITILE VARCHAR2(10)); -- SQLD 에게는 테이블 생성권한이 없어 오류 발생
+-- 권한이 불충분합니다.
+
+CONN SYSTEM/MANAGER;
+GRANT CREATE TABLE TO SQLD; -- SQLD 계정에 테이블 생성 권한 부여
+-- 권한이 부여됐습니다.
+
+CONN SQLD/DB2019;
+CREATE TABLE MENU (MENU_SEQ NUMBER NOT NULL, TITILE VARCHAR2(10));
+-- 테이블이 생성됐습니다.
+```
+
+#### ✔ OBJECT에 대한 권한 부여
+
+앞에서 SQLD 유저를 생성해 로그인하고 테이블을 만드는 과정에서 몇가지 권한을 살폈다면, 지금은 `특정 유저가 소유한 객체 권한`을 살펴본다.
+</br>오프벡트 권한은 특정 오브젝트인 테이블, 뷰 등에 대해 SELECT, INSERT, DELETE, UPDATE 작업 명령어를 의미한다.
+
+> 오브젝트 권한은 SELECT, INSERT, DELETE, UPDATE 등의 권한을 따로따로 관리하기 때문에 하나하나씩 권한을 부여해야함
+
+
+```SQL
+/*SELECT 권한*/
+CONN SCOTT/TIGER;
+SELECT * FROM SQLD.MENU; -- SCOTT은 SELECT 권한이 없어 오류 발생
+-- 테이블 또는 뷰가 존재하지 않습니다.
+
+CONN SQLD/DB2019;
+GRANT SELECT ON MENU TO SCOTT; -- SCOTT에게 SELECT 권한 부여
+-- 권한이 부여됐습니다.
+
+CONN SCOTT/TIGER;
+SELECT * FROM SQLD.MENU; -- 정상적으로 출력됨
+
+UPDATE SQLD.MENU
+   SET TITLE = '코리아'
+ WHERE MENU_SEQ = 1; -- SCOTT은 현재 SELECT 권한만 있으므로 UPDATE 시 오류 발생, 하나하나씩 권한 부여 필요.
+-- 권한이 불충분합니다.
+```
+
+#### ✔ ROLE을 이용한 권한 부여
+
+데이터베이스 관리자가 유저가 생성될 때마다 각각의 권한들을 유저에게 부여하는 작업을 수행해야하는데, 하나하나씩 부여하다보면 권한을 빠뜨릴 수도 있으므로
+유저별로 어떤 권한이 부여됐는지를 관리해야 한다.
+</br> 또한 관리해야 할 유저가 점점 늘어나고 자주 변경되는 상황에서는 매우 번거롭다.
+</br> 따라서 
+
+`ROLE을 생성하고 ROLE에 각종 권한을 부여한 후 ROLE을 다른 ROLE 혹은 유저에게 부여하여 관리한다`
+
+```SQL
+CONN SYSTEM/MANAGER;
+REVOKE CREATE SESSION, CREATE TABLE FROM SQLD;
+-- 권한이 취소됐습니다.
+
+CONN SQLD/DB2019; -- SQLD 계정에 로그인 권한 없으므로 오류 발생
+--  user SQLD lacks CREATE SESSION privilege
+
+CONN SYSTEM/MANAGER;
+
+CREATE ROLE LOGIN_TABLE;
+GRANT CREATE SESSION, CREATE TABLE TO LOGIN_TABLE; -- [로그인권한]과 [테이블생성권한]이 부여된 ROLE 생성
+-- 권한이 부여됐습니다.
+GRANT LOGIN_TABLE TO SQLD; -- ROLE을 SQLD에게 부여함으로서 SQLD는 [로그인권한]과 [테이블생성권한]이 부여됨
+-- 권한이 부여됐습니다.
+
+CONN SQLD/DB2019;
+CREATE TABLE MENU (MENU_SEQ NUMBER NOT NULL, TITILE VARCHAR2(10));
+-- 테이블이 생성됐습니다.
+```
+
 </details>
 
 ---
