@@ -205,7 +205,9 @@
 
 <details>
 
-: TCL문을 사용하면 데이터베이스의 논리적 연산 단위인 트랜잭션을 제어할 숭 ㅣㅆ다.
+#### ✔ TCL (Transaction Control Language)?
+
+: TCL문을 사용하면 데이터베이스의 논리적 연산 단위인 트랜잭션을 제어할 수 있다.
 
 > COMMIT, ROLLBACK, SAVEPOINT
 
@@ -367,7 +369,11 @@ ROLLBACK TRANSACTION SVTR1;
 
 <details>
 
+#### ✔ DDL (Data Definition Language)?
+
 : DDL을 사용하면 테이블을 포함한 데이터베이스 객체의 구조를 정의할 수 있다. 
+
+> CREATE TABLE, ALTER TABLE, DROP TABLE
 
 #### ✔ CREATE
 
@@ -577,7 +583,9 @@ TRUNCATE TABLE PLAYER;
 
 <details>
 
-유저를 생성하고 권한을 제어할 수 있는 명령어
+#### ✔ DCL (Data Definition Language)?
+
+: 유저를 생성하고 권한을 제어할 수 있는 명령어
 
 #### ✔ 유저와 권한
 
