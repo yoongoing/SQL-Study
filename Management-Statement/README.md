@@ -361,7 +361,7 @@ SAVE TRANSACTION SVTR1;
 ROLLBACK TRANSACTION SVTR1;
 ```
 
-<img src="./src/rollback.PNG", alt="rollback 원리(oracle 기준)">
+<img src="./src/rollback.PNG" alt="rollback 원리(oracle 기준)">
 
 </details>
 
