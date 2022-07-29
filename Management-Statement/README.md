@@ -9,6 +9,7 @@
   : DML을 사용하면 테이블에 데이터를  입력, 수정, 삭제할 수 있다.
 
   > INSERT, UPDATE, DELETE, MERGE
+ </br>
 
   #### ✔ INSERT
 
@@ -198,6 +199,8 @@
 
 </details>
 
+---
+
 ### [제2절] TCL
 
 <details>
@@ -210,6 +213,7 @@
 
 - 데이터베이스의 논리적 연산단위.
 - 분할할 수 없는 최소의 단위이므로 `전부 적용하거나 전부 취소한다.`
+ </br>
 
 #### ✔ 트랜잭션 특징
 
@@ -228,6 +232,7 @@
 4. 지속성 (`D`urability)
 
 : 트랜잭션이 성공적으로 수행된다면, 갱신된 데이터베이스의 내용은 영구적으로 저장되어야 함
+ </br>
 
 #### ✔ COMMIT
 
@@ -290,7 +295,7 @@ UPDATE PLAYER SET HEIGHT = 100;
 DELETE FROM PLAYER; -- AUTO COMMIT
 -- 481개 행이 영향을 받음
 ```
-
+ </br>
 
 #### ✔ ROLLBACK
 
@@ -335,6 +340,7 @@ VALUES ('19970925', 'K02', '이운재', 'GK', 182, 82, 1);
 ROLLBACK;
 -- 명령이 완료되었습니다.
 ```
+ </br>
 
 #### ✔ SAVEPOINT
 
@@ -354,6 +360,8 @@ ROLLBACK TRANSACTION SVTR1;
 <img src='./src/rollback.png', alt='rollback 원리(oracle 기준)'>
 
 </details>
+
+---
 
 ### [제3절] DDL
 
@@ -390,17 +398,18 @@ SELECT * INTO TEAM_TEMP FROM TEAM;
 </br>
 
 2. **제약조건 종류**
+
    1. PRIMARY KEY (기본키) : 테이블에 저장된 행 데이터를 고유하게 식별하기 위한 기본키 정의
     > 기본키 제약 = NOT NULL & UNIQUE
 
-   1. UNIQUE (고유키) : 테이블에 저장된 행 데이터를 고유하게 식별하기 위한 고유키 정의. *NULL은 고유키 제약 대상 아님. NULL 가능*
+   2. UNIQUE (고유키) : 테이블에 저장된 행 데이터를 고유하게 식별하기 위한 고유키 정의. *NULL은 고유키 제약 대상 아님. NULL 가능*
 
-   2. NOT NULL : NULL 값 입력 금지.
+   3. NOT NULL : NULL 값 입력 금지.
     > NULL의 의미 = '아직 정의되지 않은 값' 혹은 '아직 데이터가 입력되지 않은 경우로 공백, 숫자와는 전혀 다른 값이다.
 
-   3. CHECK : 입력할 수 있는 값의 범위 제한. TRUE or FALSE로 평가가능한 논리식 지정
+   4. CHECK : 입력할 수 있는 값의 범위 제한. TRUE or FALSE로 평가가능한 논리식 지정
 
-   4. FOREIGN KEY (외래키) : 관계형 데이터베이스에서 테이블 간의 관계를 정의하기 위해 기본키를 다른 테이블의 외래키로 복사하는 경우 생성됨. 
+   5. FOREIGN KEY (외래키) : 관계형 데이터베이스에서 테이블 간의 관계를 정의하기 위해 기본키를 다른 테이블의 외래키로 복사하는 경우 생성됨. 
     > 외래키 지정시, 참조 무결성 제약 옵션 선택 가능
 </br>
 
@@ -508,6 +517,7 @@ go
   
   ALTER TABLE PLAYER ADD CONSTRAINT PLAYER_FK FOREIGN KEY (TEAM_ID) REFERENCES TEAM(TEAM_ID);
   ```
+ </br>
 
 #### ✔ RENAME
 
@@ -525,6 +535,7 @@ sp_rename '기존테이블명', '새로운테이블명';
 
 sp_rename 'dbo.team','TEAM_BACKUO';
 ```
+ </br>
 
 #### ✔ DROP
 
@@ -536,6 +547,7 @@ DROP TABLE 테이블명 [CASCADE CONTRAINT]; -- CASCADE CONTRAINT 옵션 : 해�
 
 DROP TABLE PLAYER;
 ```
+ </br>
 
 #### ✔ TRUNCATE
 
@@ -545,6 +557,7 @@ TRUNCATE TABLE 테이블명;
 
 TRUNCATE TABLE PLAYER;
 ```
+ </br>
 
 #### ✔ DELETE vs TRUNCATE vs DROP
 
@@ -557,6 +570,8 @@ TRUNCATE TABLE PLAYER;
 ```
 
 </details>
+
+---
 
 ### [제4절] DCL
 
@@ -571,6 +586,7 @@ TRUNCATE TABLE PLAYER;
 - SCOTT : Oracle 테스트용 샘플 계정 (Default 패스워드 : TIGER)
 - SYS : 백업 및 복구 등 데이터베이스 상의 모든 관리 기능을 수행할 수 있는 최상위 관리자 계정
 - SYSTEM : 백업, 복구 등 일부 관리 기능을 제외한 모든 시스템 권한을 부여받은 DBA 계정
+ </br>
 
 #### ✔ 유저 생성과 시스템 부여
 
@@ -613,6 +629,7 @@ CONN SQLD/DB2019;
 CREATE TABLE MENU (MENU_SEQ NUMBER NOT NULL, TITILE VARCHAR2(10));
 -- 테이블이 생성됐습니다.
 ```
+ </br>
 
 #### ✔ OBJECT에 대한 권한 부여
 
@@ -640,6 +657,7 @@ UPDATE SQLD.MENU
  WHERE MENU_SEQ = 1; -- SCOTT은 현재 SELECT 권한만 있으므로 UPDATE 시 오류 발생, 하나하나씩 권한 부여 필요.
 -- 권한이 불충분합니다.
 ```
+</br>
 
 #### ✔ ROLE을 이용한 권한 부여
 
