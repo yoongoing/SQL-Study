@@ -235,7 +235,8 @@
 4. **지속성** (`D`urability)
 
 : 트랜잭션이 성공적으로 수행된다면, 갱신된 데이터베이스의 내용은 영구적으로 저장되어야 함
- </br>
+</br>
+</br>
 
 #### ✔ COMMIT
 
@@ -408,18 +409,17 @@ SELECT * INTO TEAM_TEMP FROM TEAM;
  </br>
 
 2. **제약조건 종류**
-
   1. **PRIMARY KEY (기본키)** : 테이블에 저장된 행 데이터를 고유하게 식별하기 위한 기본키 정의
-
     > 기본키 제약 = NOT NULL & UNIQUE
+  
   </br>
 
   2. **UNIQUE (고유키)** : 테이블에 저장된 행 데이터를 고유하게 식별하기 위한 고유키 정의. *NULL은 고유키 제약 대상 아님. NULL 가능*
   </br>
   
   3. **NOT NULL** : NULL 값 입력 금지.
-
     > NULL의 의미 = '아직 정의되지 않은 값' 혹은 '아직 데이터가 입력되지 않은 경우로 공백, 숫자와는 전혀 다른 값이다.
+  
   </br>
 
   4. **CHECK** : 입력할 수 있는 값의 범위 제한. TRUE or FALSE로 평가가능한 논리식 지정
@@ -427,6 +427,7 @@ SELECT * INTO TEAM_TEMP FROM TEAM;
 
   5. **FOREIGN KEY (외래키)** : 관계형 데이터베이스에서 테이블 간의 관계를 정의하기 위해 기본키를 다른 테이블의 외래키로 복사하는 경우 생성됨. 
     > 외래키 지정시, 참조 무결성 제약 옵션 선택 가능
+  
   </br>
 
 3. **생성된 테이블 구조 확인**
@@ -446,9 +447,9 @@ go
 
 : 칼럼을 추가/삭제하거나 제약조건을 추가/삭제하는 작업
 
-  1. **ADD COLUMN**
+1. **ADD COLUMN**
 
-  : 기존 테이블에 필요한 칼럼을 추가하는 명령어
+: 기존 테이블에 필요한 칼럼을 추가하는 명령어
   
   ```SQL
   -- ORACLE VER.
@@ -468,9 +469,9 @@ go
   </br>
 
 
-  2. **DROP COLUMN**
+2. **DROP COLUMN**
 
-  : 기존 테이블에 필요없는 칼럼을 삭제. 한 번 삭제된 칼럼은 복구할 수 없음
+: 기존 테이블에 필요없는 칼럼을 삭제. 한 번 삭제된 칼럼은 복구할 수 없음
   
   ```SQL
   -- ORACLE VER.
@@ -483,9 +484,9 @@ go
   ```
   </br>
 
-   3. **MODIFY COLUMN**
+3. **MODIFY COLUMN**
 
-  : 테이블에 존재하는 칼럼에 대해 ALTER TABLE 명령을 이용해 칼럼의 데이터 유형, 디폴트 값, NOT NULL 제약조건에 대한 변경을 포함. (테이블의 칼럼 정의를 변경하는 명령어)
+: 테이블에 존재하는 칼럼에 대해 ALTER TABLE 명령을 이용해 칼럼의 데이터 유형, 디폴트 값, NOT NULL 제약조건에 대한 변경을 포함. (테이블의 칼럼 정의를 변경하는 명령어)
   
   ```SQL
   -- ORACLE VER.
@@ -500,10 +501,11 @@ go
   ALTER TABLE TEAM_TEMP ALTER COLUMN ORIG_YYYY VARCHAR(8) NOT NULL;
   ALTER TABLE TEAM_TEMP ADD CONTRANT DF_ORIG_YYYY DEFAULT '20020129' FOR ORIG_YYYY;
   ```
-  
-  4. **RENAME COLUMN**
+  </br>
 
-  : 칼럼명을 어떤 이유로 불가피하게 변경해야하는 경우 (일부 DBMS에서만 지원)
+4. **RENAME COLUMN**
+
+: 칼럼명을 어떤 이유로 불가피하게 변경해야하는 경우 (일부 DBMS에서만 지원)
   
   ```SQL
   -- ORACLE VER.
@@ -514,10 +516,11 @@ go
   sp_rename '기존 칼럼명', '새로운 칼럼명', 'COLUMN';
   sp_rename 'dbo.PLAYER.PLAYER_ID', 'TEMP_ID', 'COLUMN';
   ```
+  </br>
 
-  5. **DROP CONSTRAINT**
+5. **DROP CONSTRAINT**
 
-  : 테이블 생성 시 부여했던 제약조건을 삭제하는 명령어
+: 테이블 생성 시 부여했던 제약조건을 삭제하는 명령어
   
   ```SQL
   -- ORACLE, SQL SERVER 문법 동일
@@ -526,11 +529,12 @@ go
 
   ALTER TABLE PLAYER DROP CONSTRAINT PLAYER_FK;
   ```
+  </br>
 
-  6. **ADD CONSTRAINT**
+6. **ADD CONSTRAINT**
   
-  : 테이블 생성 이후에 필요에 의해 제약조건 추가하는 명령어
-  `참조 제약조건 추가시, 참조 무결성 옵션에 따라 실수에 의한 테이블 삭제나 데이터 삭제를 방지할 수 있음`
+: 테이블 생성 이후에 필요에 의해 제약조건 추가하는 명령어
+`참조 제약조건 추가시, 참조 무결성 옵션에 따라 실수에 의한 테이블 삭제나 데이터 삭제를 방지할 수 있음`
 
   ```SQL
   -- ORACLE, SQL SERVER 문법 동일
@@ -604,6 +608,7 @@ TRUNCATE TABLE PLAYER;
 #### ✔ DCL (Data Definition Language)?
 
 : 유저를 생성하고 권한을 제어할 수 있는 명령어
+</br>
 </br>
 
 #### ✔ 유저와 권한
