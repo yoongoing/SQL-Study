@@ -409,34 +409,35 @@ SELECT * INTO TEAM_TEMP FROM TEAM;
 </br>
 
 2. **제약조건 종류**
+  <ol>
+    <li> **PRIMARY KEY (기본키)** </li>
+    </br>: 테이블에 저장된 행 데이터를 고유하게 식별하기 위한 기본키 정의
 
-  1. **PRIMARY KEY (기본키)**
-  </br>: 테이블에 저장된 행 데이터를 고유하게 식별하기 위한 기본키 정의
+    > 기본키 제약 = NOT NULL & UNIQUE
+    </br>
 
-  > 기본키 제약 = NOT NULL & UNIQUE
-  </br>
+    <li>**UNIQUE (고유키)**</li>
+    </br>: 테이블에 저장된 행 데이터를 고유하게 식별하기 위한 고유키 정의. *NULL은 고유키 제약 대상 아님. NULL 가능*
+    </br>
+    
+    <li>**NOT NULL**</li>
+    </br>: NULL 값 입력 금지.
 
-  2. **UNIQUE (고유키)**
-  </br>: 테이블에 저장된 행 데이터를 고유하게 식별하기 위한 고유키 정의. *NULL은 고유키 제약 대상 아님. NULL 가능*
-  </br>
-  
-  3. **NOT NULL**
-  </br>: NULL 값 입력 금지.
+    > NULL의 의미 = '아직 정의되지 않은 값' 혹은 '아직 데이터가 입력되지 않은 경우'로 공백, 숫자와는 전혀 다른 값이다.
+    </br>
 
-  > NULL의 의미 = '아직 정의되지 않은 값' 혹은 '아직 데이터가 입력되지 않은 경우'로 공백, 숫자와는 전혀 다른 값이다.
-  </br>
+    <li>**CHECK**</li>
+    </br>: 입력할 수 있는 값의 범위 제한. TRUE or FALSE로 평가가능한 논리식 지정
+    </br>
+    `CREATE TABLE TEAMP_TEMP (SAL NUMBER(7,2) CHECK(SAL BETWEEN 500 AND 5000))`
+    `CREATE TABLE TEAMP_TEMP (GENDER VARCHAR2(1) CHECK(GENDER IN('M','F')))`
+    </br>
 
-  4. **CHECK**
-  </br>: 입력할 수 있는 값의 범위 제한. TRUE or FALSE로 평가가능한 논리식 지정
-  </br>
-  `CREATE TABLE TEAMP_TEMP (SAL NUMBER(7,2) CHECK(SAL BETWEEN 500 AND 5000))`
-  `CREATE TABLE TEAMP_TEMP (GENDER VARCHAR2(1) CHECK(GENDER IN('M','F')))`
-  </br>
+    <li>**FOREIGN KEY (외래키)**</li>
+    </br>: 관계형 데이터베이스에서 테이블 간의 관계를 정의하기 위해 기본키를 다른 테이블의 외래키로 복사하는 경우 생성됨. 
 
-  5. **FOREIGN KEY (외래키)**
-  </br>: 관계형 데이터베이스에서 테이블 간의 관계를 정의하기 위해 기본키를 다른 테이블의 외래키로 복사하는 경우 생성됨. 
-
-  > 외래키 지정시, 참조 무결성 제약 옵션 선택 가능
+    > 외래키 지정시, 참조 무결성 제약 옵션 선택 가능
+  </ol>
   </br>
 
 3. **생성된 테이블 구조 확인**
