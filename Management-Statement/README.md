@@ -433,6 +433,7 @@ SELECT * INTO TEAM_TEMP FROM TEAM;
 
   `CREATE TABLE TEAMP_TEMP (GENDER VARCHAR2(1) CHECK(GENDER IN('M','F')))`
   </br>
+  </br>
 
   + **FOREIGN KEY (외래키)**
   </br>: 관계형 데이터베이스에서 테이블 간의 관계를 정의하기 위해 기본키를 다른 테이블의 외래키로 복사하는 경우 생성됨. 
