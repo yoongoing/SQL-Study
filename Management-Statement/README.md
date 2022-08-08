@@ -409,6 +409,7 @@ SELECT * INTO TEAM_TEMP FROM TEAM;
 </br>
 
 2. **제약조건 종류**
+
   1. **PRIMARY KEY (기본키)**
   </br>: 테이블에 저장된 행 데이터를 고유하게 식별하기 위한 기본키 정의
 
@@ -422,11 +423,14 @@ SELECT * INTO TEAM_TEMP FROM TEAM;
   3. **NOT NULL**
   </br>: NULL 값 입력 금지.
 
-  > NULL의 의미 = '아직 정의되지 않은 값' 혹은 '아직 데이터가 입력되지 않은 경우로 공백, 숫자와는 전혀 다른 값이다.
+  > NULL의 의미 = '아직 정의되지 않은 값' 혹은 '아직 데이터가 입력되지 않은 경우'로 공백, 숫자와는 전혀 다른 값이다.
   </br>
 
   4. **CHECK**
   </br>: 입력할 수 있는 값의 범위 제한. TRUE or FALSE로 평가가능한 논리식 지정
+  </br>
+  `CREATE TABLE TEAMP_TEMP (SAL NUMBER(7,2) CHECK(SAL BETWEEN 500 AND 5000))`
+  `CREATE TABLE TEAMP_TEMP (GENDER VARCHAR2(1) CHECK(GENDER IN('M','F')))`
   </br>
 
   5. **FOREIGN KEY (외래키)**
@@ -462,14 +466,14 @@ go
         ADD ( 추가할 칼럼명1    데이터 유형   [기본값]    [NOT NULL],
               [추가할 칼럼명2    데이터 유형   [기본값]    [NOT NULL]
               , ...]);
-   ALTER TABLE PLAYER ADD (ADDRESS VARCHAR2(80));
+  ALTER TABLE PLAYER ADD (ADDRESS VARCHAR2(80));
 
   -- SQL SERVER VER.
   ALTER TABLE 테이블명
         ADD   추가할 칼럼명1    데이터유형    [기본값]    [NOT NULL]
            [, 추가할 칼럼명2    데이터유형    [기본값]    [NOT NULL]
            , ...];
-   ALTER TABLE PLAYER ADD ADDRESS VARCHAR(80);
+  ALTER TABLE PLAYER ADD ADDRESS VARCHAR(80);
   ```
   </br>
 
@@ -481,11 +485,11 @@ go
   ```SQL
   -- ORACLE VER.
   ALTER TABLE 테이블명 DROP (삭제할 칼럼명1 [, 삭제할 칼럼명2, ... ]);
-   ALTER TABLE PLAYER DROP (ADDRESS);
+  ALTER TABLE PLAYER DROP (ADDRESS);
 
   -- SQL SERVER VER.
   ALTER TABLE PLAYER DROP (ADDRESS);
-   ALTER TABLE PLAYER DROP COLUMN ADDRESS;
+  ALTER TABLE PLAYER DROP COLUMN ADDRESS;
   ```
   </br>
 
@@ -499,7 +503,7 @@ go
       MODIFY (칼럼명1    데이터유형    [기본값]    [NOT NULL]
            [, 칼럼명2    데이터유형    [기본값]    [NOT NULL]
             , ...]);
-   ALTER TABLE TEAM_TEMP MODIFY (ORIG_YYYY VARCHAR(8) DEFAULT '20020129' NOT NULL);
+  ALTER TABLE TEAM_TEMP MODIFY (ORIG_YYYY VARCHAR(8) DEFAULT '20020129' NOT NULL);
 
   -- SQL SERVER VER.
   ALTER TABLE 테이블명 ALTER COLUMN   칼럼명  데이터 유형   [NOT NULL];
@@ -514,9 +518,10 @@ go
   
   ```SQL
   -- ORACLE VER.
-  -- ADD, DEOP 처럼 ANSI/ISO에 명시된 기능이 아닌, Oracle 등 일부 DBMS에서만 지원함
+  -- ADD, DROP 처럼 ANSI/ISO에 명시된 기능이 아닌, Oracle 등 일부 DBMS에서만 지원함
   ALTER TABLE 테이블명 RENAME COLUMN 기존 칼럼명 TO 새로운 칼럼명;
   ALTER TABLE PLAYER COLUMN PLAYER_ID TO TEMP_ID;
+
   -- SQL SERVER VER.
   sp_rename '기존 칼럼명', '새로운 칼럼명', 'COLUMN';
   sp_rename 'dbo.PLAYER.PLAYER_ID', 'TEMP_ID', 'COLUMN';
@@ -595,11 +600,11 @@ TRUNCATE TABLE PLAYER;
 #### ✔ DELETE vs TRUNCATE vs DROP
 
 ```BASH
-- DELETE : 데이터는 지워지지만, 테이블 저장했던 메모리는 지워지지 않음. 원하는 데이터만 지울 수 있으며 ROLLBACK 가능
+- DELETE : 데이터 삭제 O / 테이블 삭제 X / 메모리 삭제 X / ROLLBACK O
 
-- TRUNCATE : 테이블은 삭제하지 않고 데이터만 지워진다. 하지만 테이블을 저장했던 메모리는 지워지며, ROLLBACK 불가
+- TRUNCATE : 데이터 삭제 O / 테이블 삭제 X / 메모리 삭제 O / ROLLBACK X
 
-- DROP : 테이블 메모리, 데이터 모두 삭제하며, ROLLBACK 불가
+- DROP : 데이터 삭제 O / 테이블 삭제 O / 메모리 삭제 O / ROLLBACK X
 ```
 
 </details>
@@ -610,9 +615,9 @@ TRUNCATE TABLE PLAYER;
 
 <details>
 
-#### ✔ DCL (Data Definition Language)?
+#### ✔ DCL (Data Control Language)?
 
-: 유저를 생성하고 권한을 제어할 수 있는 명령어
+: DCL문을 사용하면 테이블을 사용하면 유저를 생성하거나 데이터베이스 권한을 제어할 수 있다.
 </br>
 </br>
 
@@ -627,10 +632,11 @@ TRUNCATE TABLE PLAYER;
 
 #### ✔ 유저 생성과 시스템 부여
 
-사용자가 실행하는 모든 DDL 문장은 그에 해당하는 적절한 구너한이 있어야만 실행할 수 있다. 그것을 `시스템권한` 이라고 하며, `ROLE`을 통해 권한을 부여한다.
+사용자가 실행하는 모든 DDL 문장은 그에 해당하는 적절한 권한이 있어야만 실행할 수 있다. 그것을 `시스템권한` 이라고 하며, `ROLE`을 통해 권한을 부여한다.
 
 ```SQL
 /* CREATE USER 권한 */
+CONN SCOTT/TIGER;
 CREATE USER SQLD IDENTIFIED BY DB2019;
 -- 권한이 불충분합니다.
 
@@ -638,6 +644,7 @@ CONN SYSTEM/MANAGER;
 GRANT CREATE USER TO SCOTT; -- SCOTT 계정에 계정 생성 권한 부여
 -- 권한이 부여됐습니다.
 
+CONN SCOTT/TIGER;
 CREATE USER SQLD INDENTIFIED BY DB2019;
 -- 사용자가 생성됐습니다.
 
