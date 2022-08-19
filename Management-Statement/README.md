@@ -47,7 +47,7 @@
   </br>
 
 
-  2. **서브 쿼리를 이요한 다중 행 INSERT 문**
+  2. **서브 쿼리를 이용한 다중 행 INSERT 문**
 
   ```SQL
   INSERT INTO 테이블명[(칼럼1, 칼럼2, ...)] 
@@ -137,14 +137,14 @@
   ```
   </br>
 
-  #### ✔ MERGE
+  #### ✔ MERGE (ORACLE 9.0 ↑)
 
-  새로운 행을 입력하거나, 기존 행을 수정하는 작업을 한 번에 할 수 있음  
+  새로운 행을 입력하거나, 기존 행을 수정하는 작업을 한 번에 할 수 있음 (UPDATE 와 INSERT 구문을 한번에)  
 
   ```SQL
   MERGE
-   INTO 타겟 테이블명
-  USING 소스 테이블명
+   INTO 타겟 테이블명 혹은 view 명 (변경할 테이블)
+  USING 소스 테이블명 혹은 서브쿼리 (비교할 테이블)
      ON (조인 조건식)
    WHEN MATCHED THEN -- 조인에 성공한 행들
     UPDATE
@@ -429,9 +429,9 @@ SELECT * INTO TEAM_TEMP FROM TEAM;
   + **CHECK**
   </br>: 입력할 수 있는 값의 범위 제한. TRUE or FALSE로 평가가능한 논리식 지정
   
-  `CREATE TABLE TEAMP_TEMP (SAL NUMBER(7,2) CHECK(SAL BETWEEN 500 AND 5000))`
+  `CREATE TABLE TEAM_TEMP (SAL NUMBER(7,2) CHECK(SAL BETWEEN 500 AND 5000))`
 
-  `CREATE TABLE TEAMP_TEMP (GENDER VARCHAR2(1) CHECK(GENDER IN('M','F')))`
+  `CREATE TABLE TEAM_TEMP (GENDER VARCHAR2(1) CHECK(GENDER IN('M','F')))`
   </br>
   </br>
 
@@ -522,7 +522,7 @@ go
   -- ORACLE VER.
   -- ADD, DROP 처럼 ANSI/ISO에 명시된 기능이 아닌, Oracle 등 일부 DBMS에서만 지원함
   ALTER TABLE 테이블명 RENAME COLUMN 기존 칼럼명 TO 새로운 칼럼명;
-  ALTER TABLE PLAYER COLUMN PLAYER_ID TO TEMP_ID;
+  ALTER TABLE PLAYER  RENAME COLUMN PLAYER_ID TO TEMP_ID;
 
   -- SQL SERVER VER.
   sp_rename '기존 칼럼명', '새로운 칼럼명', 'COLUMN';
@@ -625,7 +625,7 @@ TRUNCATE TABLE PLAYER;
 
 #### ✔ 유저와 권한
 
-대부분의 데이터베이스는 데이터 보호와 보안을 위해서 유저와권한을 관리하고 있다. Oracle을 설치하면 기본적으로 제공되는 유저는 다음과 같다.
+대부분의 데이터베이스는 데이터 보호와 보안을 위해서 유저와 권한을 관리하고 있다. Oracle을 설치하면 기본적으로 제공되는 유저는 다음과 같다.
 
 - SCOTT : Oracle 테스트용 샘플 계정 (Default 패스워드 : TIGER)
 - SYS : 백업 및 복구 등 데이터베이스 상의 모든 관리 기능을 수행할 수 있는 최상위 관리자 계정
@@ -680,7 +680,7 @@ CREATE TABLE MENU (MENU_SEQ NUMBER NOT NULL, TITILE VARCHAR2(10));
 #### ✔ OBJECT에 대한 권한 부여
 
 앞에서 SQLD 유저를 생성해 로그인하고 테이블을 만드는 과정에서 몇가지 권한을 살폈다면, 지금은 `특정 유저가 소유한 객체 권한`을 살펴본다.
-</br>오프벡트 권한은 특정 오브젝트인 테이블, 뷰 등에 대해 SELECT, INSERT, DELETE, UPDATE 작업 명령어를 의미한다.
+</br>오프젝트 권한은 특정 오브젝트인 테이블, 뷰 등에 대해 SELECT, INSERT, DELETE, UPDATE 작업 명령어를 의미한다.
 
 > 오브젝트 권한은 SELECT, INSERT, DELETE, UPDATE 등의 권한을 따로따로 관리하기 때문에 하나하나씩 권한을 부여해야함
 
