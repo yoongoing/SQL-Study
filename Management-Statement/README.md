@@ -739,4 +739,4 @@ CREATE TABLE MENU (MENU_SEQ NUMBER NOT NULL, TITILE VARCHAR2(10));
 
 ### Reference
 - SQL 전문가 가이드
-- ORACLE 공식문서 (https://docs.oracle.com/cd/B28359_01/server.111/b28318/toc.htm)
+- [ORACLE 공식문서](https://docs.oracle.com/cd/B28359_01/server.111/b28318/toc.htm)
