@@ -602,11 +602,11 @@ TRUNCATE TABLE PLAYER;
 #### ✔ DELETE vs TRUNCATE vs DROP
 
 ```BASH
-- DELETE : 데이터 삭제 O / 테이블 삭제 X / 메모리 삭제 X / ROLLBACK O
+- DELETE : 데이터 삭제 O / 테이블 삭제 X / storage 삭제 X / ROLLBACK O
 
-- TRUNCATE : 데이터 삭제 O / 테이블 삭제 X / 메모리 삭제 O / ROLLBACK X
+- TRUNCATE : 데이터 삭제 O / 테이블 삭제 X / storage 삭제 O / ROLLBACK X
 
-- DROP : 데이터 삭제 O / 테이블 삭제 O / 메모리 삭제 O / ROLLBACK X
+- DROP : 데이터 삭제 O / 테이블 삭제 O / storage 삭제 O / ROLLBACK X
 ```
 
 </details>
